@@ -1,0 +1,13 @@
+{
+  "name": "worker-keepalive",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "tailwindcss": "3.4.14",
+    "vue": "3.5.43"
+  }
+}
