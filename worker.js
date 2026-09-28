@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.0.0 (D1) ==========
+// ========== 站点保活管理系统 v1.0.1 (D1) ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1645,7 +1645,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.0.0 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.0.1 · D1 存储</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1673,10 +1673,10 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.0.0</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.0.1</div>
                         </div>
-                        <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="downCount > 0 ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
-                            <span class="w-1.5 h-1.5 rounded-full" :class="downCount > 0 ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ downCount > 0 ? '异常' : '运行中' }}
+                        <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
+                            <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
                         </span>
                     </div>
                     <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -1718,7 +1718,7 @@ const UI_HTML = `
                         <button @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.0.0 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.0.1 · D1 存储</div>
                     </div>
                 </aside>
 
@@ -2218,6 +2218,7 @@ const UI_HTML = `
                 const statTotal = computed(() => config.value.tasks.length);
                 const okCount = computed(() => config.value.tasks.filter(t => t.status === 'ok').length);
                 const downCount = computed(() => config.value.tasks.filter(t => t.status === 'down').length);
+                const allDown = computed(() => { const ts = config.value.tasks; return ts.length > 0 && downCount.value === ts.length; });
                 const isPaused = (t) => (t.failStreak || 0) > 0 && (t.failSince || 0) > 0 && (Date.now() - t.failSince >= 7 * 86400000);
                 const channelIcon = (type) => ({ telegram: '✈️', bark: '🔔', pushplus: '📨', notifyx: '📮', dingtalk: '🔷', lark: '🕊️', resend: '📧', gotify: '📡', ntfy: '📻', webhook: '🔗' }[type] || '📢');
                 const refreshAll = async () => {
@@ -2544,7 +2545,7 @@ const UI_HTML = `
                     manualCheck, manualRunning, refreshAll, isRefreshing, isSaving, loginShake,
                     toasts, toast, dismissToast, confirmDlg, askConfirm, answerConfirm, cancelConfirm,
                     clearLogs, clearLogsReal, doLogoutReal, removeTaskReal, removeChannelReal,
-                    statTotal, okCount, downCount, isPaused, channelIcon, switchTab
+                    statTotal, okCount, downCount, allDown, isPaused, channelIcon, switchTab
                 };
             }
         }).mount('#app');
@@ -3067,7 +3068,7 @@ export default {
                 let detailMsg = '';
                 const startTs = Date.now();
                 try {
-                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.0' }, cf: { cacheTtl: 0 } });
+                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.1' }, cf: { cacheTtl: 0 } });
                     isSuccess = res.ok;
                     detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
                 } catch (e) {
@@ -3124,7 +3125,7 @@ export default {
             let detailMsg = '';
             const startTs = Date.now();
             try {
-                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.0' }, cf: { cacheTtl: 0 } });
+                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.1' }, cf: { cacheTtl: 0 } });
                 isSuccess = res.ok;
                 detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
             } catch (e) {

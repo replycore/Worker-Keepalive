@@ -1,8 +1,17 @@
-# Worker-Keepalive v1.0.0
+# Worker-Keepalive v1.0.1
 
 站点保活管理系统（Cloudflare Worker + D1）。
 
 定时探测 URL 是否存活，挂了就按任务推送告警。自带 Web 管理面板，手机和电脑都能用。
+
+## 预览
+
+| | 浅色模式 | 深色模式 |
+|---|---|---|
+| 电脑端登录 | ![电脑端登录（浅色）](docs/screenshots/pc-login.png) | ![电脑端登录（深色）](docs/screenshots/pc-login-dark.png) |
+| 电脑端运行概览 | ![电脑端运行概览（浅色）](docs/screenshots/pc-overview.png) | ![电脑端运行概览（深色）](docs/screenshots/pc-overview-dark.png) |
+| 移动端登录 | ![移动端登录（浅色）](docs/screenshots/mobile-login.png) | ![移动端登录（深色）](docs/screenshots/mobile-login-dark.png) |
+| 移动端运行概览 | ![移动端运行概览（浅色）](docs/screenshots/mobile-overview.png) | ![移动端运行概览（深色）](docs/screenshots/mobile-overview-dark.png) |
 
 ## 部署
 
