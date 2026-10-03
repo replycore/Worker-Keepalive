@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.8 ==========
+// ========== 站点保活管理系统 v1.2.9 ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -51,29 +51,23 @@ const UI_HTML = `
 .bottom-0 {
     bottom: 0px
 }
-.bottom-2 {
-    bottom: 0.5rem
-}
 .left-0 {
     left: 0px
+}
+.left-3 {
+    left: 0.75rem
 }
 .right-0 {
     right: 0px
 }
-.right-2 {
-    right: 0.5rem
+.right-3 {
+    right: 0.75rem
 }
 .top-0 {
     top: 0px
 }
-.top-1 {
-    top: 0.25rem
-}
 .top-14 {
     top: 3.5rem
-}
-.top-2 {
-    top: 0.5rem
 }
 .top-\\[4\\.5rem\\] {
     top: 4.5rem
@@ -127,12 +121,6 @@ const UI_HTML = `
 .ml-1 {
     margin-left: 0.25rem
 }
-.ml-12 {
-    margin-left: 3rem
-}
-.ml-16 {
-    margin-left: 4rem
-}
 .ml-auto {
     margin-left: auto
 }
@@ -156,9 +144,6 @@ const UI_HTML = `
 }
 .mt-3 {
     margin-top: 0.75rem
-}
-.mt-auto {
-    margin-top: auto
 }
 .line-clamp-2 {
     overflow: hidden;
@@ -256,9 +241,6 @@ const UI_HTML = `
 .min-h-\\[100dvh\\] {
     min-height: 100dvh
 }
-.w-1 {
-    width: 0.25rem
-}
 .w-1\\.5 {
     width: 0.375rem
 }
@@ -276,9 +258,6 @@ const UI_HTML = `
 }
 .w-14 {
     width: 3.5rem
-}
-.w-16 {
-    width: 4rem
 }
 .w-2 {
     width: 0.5rem
@@ -395,6 +374,9 @@ const UI_HTML = `
 .items-center {
     align-items: center
 }
+.items-stretch {
+    align-items: stretch
+}
 .justify-center {
     justify-content: center
 }
@@ -461,6 +443,9 @@ const UI_HTML = `
 .overflow-hidden {
     overflow: hidden
 }
+.overflow-x-auto {
+    overflow-x: auto
+}
 .overflow-y-auto {
     overflow-y: auto
 }
@@ -499,10 +484,6 @@ const UI_HTML = `
 .rounded-xl {
     border-radius: 0.75rem
 }
-.rounded-r-full {
-    border-top-right-radius: 9999px;
-    border-bottom-right-radius: 9999px
-}
 .rounded-t-3xl {
     border-top-left-radius: 1.5rem;
     border-top-right-radius: 1.5rem
@@ -521,9 +502,6 @@ const UI_HTML = `
 }
 .border-b {
     border-bottom-width: 1px
-}
-.border-r {
-    border-right-width: 1px
 }
 .border-t {
     border-top-width: 1px
@@ -902,12 +880,6 @@ const UI_HTML = `
 .pb-6 {
     padding-bottom: 1.5rem
 }
-.pl-12 {
-    padding-left: 3rem
-}
-.pl-16 {
-    padding-left: 4rem
-}
 .pl-2\\.5 {
     padding-left: 0.625rem
 }
@@ -916,9 +888,6 @@ const UI_HTML = `
 }
 .pt-2 {
     padding-top: 0.5rem
-}
-.pt-3 {
-    padding-top: 0.75rem
 }
 .pt-4 {
     padding-top: 1rem
@@ -1148,14 +1117,6 @@ const UI_HTML = `
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms
-}
-.transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms
-}
-.duration-200 {
-    transition-duration: 200ms
 }
 .hover\\:bg-gray-100:hover {
     --tw-bg-opacity: 1;
@@ -1513,9 +1474,6 @@ const UI_HTML = `
     }
 }
 @media (min-width: 768px) {
-    .md\\:ml-0 {
-        margin-left: 0px
-    }
     .md\\:block {
         display: block
     }
@@ -1533,9 +1491,6 @@ const UI_HTML = `
     }
     .md\\:pb-10 {
         padding-bottom: 2.5rem
-    }
-    .md\\:pl-0 {
-        padding-left: 0px
     }
 }
 @media (min-width: 1024px) {
@@ -1643,6 +1598,9 @@ const UI_HTML = `
         input, select, textarea { font-size: 16px; }
         /* 关 preflight 后 body 默认 8px 外边距还在，去掉以免底部导航/顶栏与视口边缘留缝 */
         body { margin: 0; }
+        /* 横滑 Tab 隐藏滚动条 */
+        .no-scrollbar { scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
 
 </style>
 </head>
@@ -1666,7 +1624,7 @@ const UI_HTML = `
     </script>
     <div id="app" v-cloak>
         <!-- Toast 通知栈：移动端在顶栏下方（不盖住“运行中”），桌面端右上角 -->
-        <div class="fixed top-[4.5rem] sm:top-3 inset-x-3 md:ml-0 sm:inset-x-auto sm:right-5 sm:w-80 z-[100] space-y-2" :class="navCollapsed ? 'ml-12' : 'ml-16'">
+        <div class="fixed top-[4.5rem] sm:top-3 inset-x-3 sm:inset-x-auto sm:right-5 sm:w-80 z-[100] space-y-2">
             <div v-for="t in toasts" :key="t.id" class="toast-item flex items-start gap-2.5 p-3.5 rounded-2xl shadow-xl border text-xs font-bold backdrop-blur-xl"
                 :class="[t.leaving ? 'toast-out' : '', t.type === 'success' ? 'bg-green-50/95 dark:bg-green-950/90 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300' : t.type === 'error' ? 'bg-red-50/95 dark:bg-red-950/90 border-red-200 dark:border-red-800 text-red-600 dark:text-red-300' : 'bg-white/95 dark:bg-slate-800/95 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200']">
                 <span class="text-base leading-none shrink-0">{{ t.type === 'success' ? '✅' : t.type === 'error' ? '❌' : 'ℹ️' }}</span>
@@ -1698,7 +1656,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.8</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.9</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1718,7 +1676,7 @@ const UI_HTML = `
         </div>
 
         <!-- ============ 主界面 ============ -->
-        <div v-else-if="isLoggedIn" class="animate-fade-in md:pl-0" :class="navCollapsed ? 'pl-12' : 'pl-16'">
+        <div v-else-if="isLoggedIn" class="animate-fade-in">
             <!-- 顶栏 -->
             <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-gray-200/80 dark:border-slate-800">
                 <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2">
@@ -1726,7 +1684,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.8</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.9</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1748,6 +1706,30 @@ const UI_HTML = `
                 </div>
                 <div v-if="isRefreshing" class="h-0.5 overflow-hidden"><div class="refresh-bar h-full w-1/3 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></div></div>
             </header>
+
+            <!-- 移动端顶部横滑 Tab：吸在顶栏下方，滚动时保持可见 -->
+            <nav class="md:hidden sticky top-14 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-gray-200/80 dark:border-slate-800">
+                <div class="flex items-stretch gap-0.5 px-2 overflow-x-auto no-scrollbar">
+                    <button @click="switchTab('dashboard')" class="relative flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-0 transition" :class="currentTab === 'dashboard' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-slate-400'">
+                        <span class="text-base leading-none">📊</span><span>概览</span>
+                        <span v-if="downCount > 0" class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                    <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition" :class="currentTab === 'dashboard' ? 'bg-indigo-500' : 'bg-transparent'"></span></button>
+                    <button @click="switchTab('tasks')" class="relative flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-0 transition" :class="currentTab === 'tasks' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-slate-400'">
+                        <span class="text-base leading-none">🔗</span><span>任务</span>
+                        <span v-if="config.tasks.length > 0" class="min-w-[18px] h-[18px] px-1 rounded-full bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center">{{ config.tasks.length }}</span>
+                    <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition" :class="currentTab === 'tasks' ? 'bg-indigo-500' : 'bg-transparent'"></span></button>
+                    <button @click="switchTab('channels')" class="relative flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-0 transition" :class="currentTab === 'channels' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-slate-400'">
+                        <span class="text-base leading-none">📢</span><span>渠道</span>
+                        <span v-if="config.channels.length > 0" class="min-w-[18px] h-[18px] px-1 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold flex items-center justify-center">{{ config.channels.length }}</span>
+                    <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition" :class="currentTab === 'channels' ? 'bg-indigo-500' : 'bg-transparent'"></span></button>
+                    <button @click="switchTab('logs')" class="relative flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-0 transition" :class="currentTab === 'logs' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-slate-400'">
+                        <span class="text-base leading-none">📜</span><span>日志</span>
+                    <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition" :class="currentTab === 'logs' ? 'bg-indigo-500' : 'bg-transparent'"></span></button>
+                    <button v-if="isRoot" @click="switchTab('users')" class="relative flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-0 transition" :class="currentTab === 'users' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-slate-400'">
+                        <span class="text-base leading-none">👥</span><span>账号</span>
+                    <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition" :class="currentTab === 'users' ? 'bg-indigo-500' : 'bg-transparent'"></span></button>
+                </div>
+            </nav>
 
             <div class="max-w-6xl mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-6 md:pb-10 md:flex md:gap-5 md:items-start">
                 <!-- 桌面端侧边栏 -->
@@ -1771,7 +1753,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.8</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.9</div>
                     </div>
                 </aside>
 
@@ -2126,40 +2108,7 @@ const UI_HTML = `
                 </main>
             </div>
 
-            <!-- 移动端左侧竖栏导航：iOS Safari 底部工具栏会遮挡底部导航，改走左侧（Safari 左边缘无浏览器 chrome） -->
-            <nav class="md:hidden fixed left-0 top-0 bottom-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-r border-gray-200 dark:border-slate-800 flex flex-col items-center gap-1 pt-3 transition-all duration-200" :class="navCollapsed ? 'w-12' : 'w-16'" style="padding-bottom: env(safe-area-inset-bottom);">
-                <button @click="switchTab('dashboard')" class="relative flex flex-col items-center gap-0.5 py-2 w-full border-0 transition" :class="currentTab === 'dashboard' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
-                    <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition" :class="currentTab === 'dashboard' ? 'bg-indigo-500' : 'bg-transparent'"></span>
-                    <span class="text-xl leading-none">📊</span>
-                    <span v-show="!navCollapsed" class="text-[10px] font-bold">概览</span>
-                    <span v-if="downCount > 0" class="absolute top-1 right-2 w-2 h-2 rounded-full bg-red-500"></span>
-                </button>
-                <button @click="switchTab('tasks')" class="relative flex flex-col items-center gap-0.5 py-2 w-full border-0 transition" :class="currentTab === 'tasks' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
-                    <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition" :class="currentTab === 'tasks' ? 'bg-indigo-500' : 'bg-transparent'"></span>
-                    <span class="text-xl leading-none">🔗</span>
-                    <span v-show="!navCollapsed" class="text-[10px] font-bold">任务</span>
-                    <span v-if="config.tasks.length > 0" class="absolute top-1 right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center">{{ config.tasks.length }}</span>
-                </button>
-                <button @click="switchTab('channels')" class="relative flex flex-col items-center gap-0.5 py-2 w-full border-0 transition" :class="currentTab === 'channels' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
-                    <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition" :class="currentTab === 'channels' ? 'bg-indigo-500' : 'bg-transparent'"></span>
-                    <span class="text-xl leading-none">📢</span>
-                    <span v-show="!navCollapsed" class="text-[10px] font-bold">渠道</span>
-                    <span v-if="config.channels.length > 0" class="absolute top-1 right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold flex items-center justify-center">{{ config.channels.length }}</span>
-                </button>
-                <button @click="switchTab('logs')" class="relative flex flex-col items-center gap-0.5 py-2 w-full border-0 transition" :class="currentTab === 'logs' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
-                    <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition" :class="currentTab === 'logs' ? 'bg-indigo-500' : 'bg-transparent'"></span>
-                    <span class="text-xl leading-none">📜</span>
-                    <span v-show="!navCollapsed" class="text-[10px] font-bold">日志</span>
-                </button>
-                <button v-if="isRoot" @click="switchTab('users')" class="relative flex flex-col items-center gap-0.5 py-2 w-full border-0 transition" :class="currentTab === 'users' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
-                    <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition" :class="currentTab === 'users' ? 'bg-indigo-500' : 'bg-transparent'"></span>
-                    <span class="text-xl leading-none">👥</span>
-                    <span v-show="!navCollapsed" class="text-[10px] font-bold">账号</span>
-                </button>
-                <button @click="toggleNavRail" :title="navCollapsed ? '展开导航' : '收起导航'" class="mt-auto mb-1 w-9 h-9 rounded-xl text-gray-400 dark:text-slate-500 text-base font-black border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 btn-press">{{ navCollapsed ? '»' : '«' }}</button>
-            </nav>
-
-            <!-- 批量分配渠道弹窗 -->
+<!-- 批量分配渠道弹窗 -->
             <div v-if="showBatchModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm">
                 <div class="sheet-in w-full sm:max-w-lg bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-3xl border border-gray-200 dark:border-slate-700 overflow-hidden max-h-[92dvh] flex flex-col" style="padding-bottom: env(safe-area-inset-bottom);">
                     <div class="px-5 py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center shrink-0">
@@ -2351,11 +2300,6 @@ const UI_HTML = `
                 watch(() => config.value, () => { if (isLoggedIn.value) hasUnsavedChanges.value = true; }, { deep: true });
 
                 const switchTab = (name) => { currentTab.value = name; window.scrollTo({ top: 0, behavior: "smooth" }); };
-                const navCollapsed = ref(localStorage.getItem('nav_rail') === 'collapsed');
-                const toggleNavRail = () => {
-                    navCollapsed.value = !navCollapsed.value;
-                    localStorage.setItem('nav_rail', navCollapsed.value ? 'collapsed' : 'expanded');
-                };
                 const tabClass = (name) => currentTab.value === name
                     ? 'tab-active bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-bold'
                     : 'text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 hover:text-indigo-500';
@@ -2739,7 +2683,7 @@ const UI_HTML = `
                 return {
                     isDark, currentTab, hasUnsavedChanges, toggleTheme, tabClass, formatTime, formatLogTime,
                     isLoggedIn, isLoggingIn, loginForm, loggedInUser, doLogin,
-                    sysUsers, rootUsername, isRoot, currentOwner, accountOptions, onOwnerFilterChange, saveUsers, addUser, removeUser, navCollapsed, toggleNavRail,
+                    sysUsers, rootUsername, isRoot, currentOwner, accountOptions, onOwnerFilterChange, saveUsers, addUser, removeUser,
                     config, logs, logLevel, loadConfig, fetchLogs, saveConfig,
                     importFileInput, exportConfig, triggerImport, handleImportFile,
                     newChannel, addChannel, testChannel,
