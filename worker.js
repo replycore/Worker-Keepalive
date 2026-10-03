@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.5 ==========
+// ========== 站点保活管理系统 v1.2.6 ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1659,7 +1659,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.5</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.6</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1687,7 +1687,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.5</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.6</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1732,7 +1732,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.5</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.6</div>
                     </div>
                 </aside>
 
@@ -2053,7 +2053,7 @@ const UI_HTML = `
                             <h3 class="font-extrabold text-sm text-gray-800 dark:text-slate-200">👥 面板子账号</h3>
                             <button @click="addUser" class="btn-press text-[11px] font-bold bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 px-3.5 py-2 rounded-xl border border-indigo-200 dark:border-indigo-700">➕ 添加</button>
                         </div>
-                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">修改后点下方保存生效。密码留空表示不修改。</p>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">修改后点下方保存生效。密码留空表示不修改。删除子账号会同时清除它的全部保活任务、通知渠道和任务记录。</p>
                         <div class="space-y-2.5 mb-4">
                             <div v-for="(user, idx) in sysUsers" :key="idx" class="bg-gray-50 dark:bg-slate-900/60 p-3 rounded-2xl border border-gray-200 dark:border-slate-700">
                                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
@@ -2375,9 +2375,11 @@ const UI_HTML = `
                             const data = await res.json();
                             rootUsername.value = data.rootUser;
                             sysUsers.value = (data.users || []).map(u => ({ username: u.username, password: '' }));
+                            sysUsersOrig.value = (data.users || []).map(u => u.username);
                         }
                     } catch (e) {}
                 };
+                const sysUsersOrig = ref([]);
                 const saveUsers = async () => {
                     const payload = [];
                     for (const u of sysUsers.value) {
@@ -2386,17 +2388,25 @@ const UI_HTML = `
                         if (u._new && !u.password) return toast('新用户请设置密码', 'error');
                         payload.push({ username: u.username, password: u.password || '' });
                     }
-                    try {
-                        const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                        if (res.ok) {
-                            sysUsers.value.forEach(u => { u.password = ''; delete u._new; });
-                            toast('子账号已保存', 'success');
-                        }
-                        else {
+                    // 本次被删掉的子账号：保存时会一并清除它的全部数据，先二次确认
+                    const removed = (sysUsersOrig.value || []).filter(n => !sysUsers.value.some(u => u.username === n));
+                    const doSave = async () => {
+                        try {
+                            const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                             const data = await res.json().catch(() => ({}));
-                            toast(data.error || '保存失败，请重试', 'error');
-                        }
-                    } catch (e) { toast('保存失败，请重试', 'error'); }
+                            if (res.ok) {
+                                sysUsers.value.forEach(u => { u.password = ''; delete u._new; });
+                                sysUsersOrig.value = sysUsers.value.map(u => u.username);
+                                const del = data.deleted || [];
+                                toast(del.length ? '已删除子账号 ' + del.join('、') + ' 及其全部任务、渠道和日志' : '子账号已保存', 'success');
+                            }
+                            else {
+                                toast(data.error || '保存失败，请重试', 'error');
+                            }
+                        } catch (e) { toast('保存失败，请重试', 'error'); }
+                    };
+                    if (removed.length) askConfirm('确定删除子账号 ' + removed.join('、') + '？\\n它的全部保活任务、通知渠道和任务记录将被一并清除，该操作不可恢复。', doSave);
+                    else doSave();
                 };
                 const addUser = () => sysUsers.value.push({ username: '', password: '', _new: true });
                 const removeUser = (idx) => sysUsers.value.splice(idx, 1);
@@ -3280,8 +3290,19 @@ export default {
                         }
                         stmts.push(db.prepare('INSERT INTO users (username, password, salt) VALUES (?, ?, ?)').bind(u.username, hpw, salt));
                     }
+                    // 被删除的子账号：级联清除它的全部保活任务、通知渠道和任务记录
+                    const newNames = new Set((payload || []).map(u => u.username).filter(Boolean));
+                    const deleted = [];
+                    for (const name of exMap.keys()) {
+                        if (!newNames.has(name)) {
+                            deleted.push(name);
+                            stmts.push(db.prepare('DELETE FROM tasks WHERE owner = ?').bind(name));
+                            stmts.push(db.prepare('DELETE FROM channels WHERE owner = ?').bind(name));
+                            stmts.push(db.prepare('DELETE FROM logs WHERE owner = ?').bind(name));
+                        }
+                    }
                     await db.batch(stmts);
-                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    return new Response(JSON.stringify({ status: 'ok', deleted }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
