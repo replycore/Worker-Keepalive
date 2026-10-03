@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.0.1 (D1) ==========
+// ========== 站点保活管理系统 v1.1.0 (D1) ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1535,6 +1535,10 @@ const UI_HTML = `
         .login-shake { animation: shake 0.45s ease both; }
         .input-focus { transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease; }
         .input-focus:focus { box-shadow: 0 0 0 3px rgba(99,102,241,.18); }
+        /* ---- 渐变修复 ---- */
+        /* 构建关闭了 preflight，Tailwind v3.4 的 from/to 颜色类依赖渐变位置变量，但其默认值没有被输出，
+           导致所有 bg-gradient-to-* 透明不可见；此处补上默认值（等价于渐变色的默认起止位置） */
+        *, ::before, ::after { --tw-gradient-from-position: 0%; --tw-gradient-via-position: 50%; --tw-gradient-to-position: 100%; }
         /* ---- 渐变按钮 ---- */
         .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6 60%, #a855f7); background-size: 150% 150%; transition: filter .2s ease, transform .12s ease, box-shadow .2s ease, background-position .4s ease; box-shadow: 0 8px 22px -8px rgba(124,58,237,.55); }
         .btn-primary:hover { filter: brightness(1.06); background-position: 90% 50%; box-shadow: 0 10px 26px -8px rgba(124,58,237,.65); }
@@ -1645,7 +1649,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.0.1 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.1.0 · D1 存储</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1673,7 +1677,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.0.1</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.1.0</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1718,7 +1722,7 @@ const UI_HTML = `
                         <button @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.0.1 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.1.0 · D1 存储</div>
                     </div>
                 </aside>
 
@@ -1745,6 +1749,39 @@ const UI_HTML = `
                             <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500"></div>
                             <div class="text-[11px] text-gray-400 dark:text-slate-400 font-bold mb-1">📢 通知渠道</div>
                             <div class="text-3xl font-black text-amber-500 dark:text-amber-400"><span class="num-pop" :key="'c'+config.channels.length">{{ config.channels.length }}</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                        <div class="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-100 dark:border-slate-700/70">
+                            <h2 class="text-sm font-extrabold text-gray-800 dark:text-slate-200">💳 帐户额度</h2>
+                            <button @click="fetchQuota" :disabled="quota.loading" class="btn-press text-[11px] font-bold px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-slate-700/70 text-indigo-600 dark:text-indigo-300 border border-indigo-100 dark:border-transparent disabled:opacity-50 flex items-center gap-1">
+                                <span :class="quota.loading ? 'inline-block animate-spin' : ''">🔄</span>{{ quota.loading ? '查询中' : '手动查询' }}
+                            </button>
+                        </div>
+                        <div class="px-4 sm:px-5 py-4">
+                            <div v-if="quota.loading && !quota.data" class="space-y-3">
+                                <div v-for="n in 3" :key="n" class="space-y-2"><div class="skeleton h-3 rounded-lg w-1/3"></div><div class="skeleton h-2 rounded-full w-full"></div></div>
+                            </div>
+                            <div v-else-if="quota.error && !quota.data" class="text-center py-6">
+                                <div class="text-xs text-gray-400 dark:text-slate-500 font-bold">{{ quota.error }}</div>
+                                <button @click="fetchQuota" class="mt-2 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-indigo-600 text-white">重试</button>
+                            </div>
+                            <div v-else-if="quota.data" class="space-y-3">
+                                <div v-if="quota.data.demo" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/70 text-amber-600 dark:text-amber-400 inline-block">演示数据 · 在「账号」页配置 Cloudflare API 后显示真实额度</div>
+                                <div v-else class="text-[10px] font-bold px-2 py-1 rounded-lg bg-green-100 dark:bg-green-950/70 text-green-700 dark:text-green-400 inline-block">实时数据{{ quota.data.accountName ? ' · ' + quota.data.accountName : '' }}</div>
+                                <div v-if="quota.data.error" class="text-[10px] text-red-500 dark:text-red-400 font-bold">{{ quota.data.error }}</div>
+                                <div v-for="(item, i) in quota.data.items" :key="i">
+                                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                                        <span class="text-[11px] font-bold text-gray-600 dark:text-slate-300">{{ item.name }}</span>
+                                        <span class="text-[11px] text-gray-400 dark:text-slate-500 font-mono">{{ quotaUsedText(item) }} / {{ item.limit }} {{ item.unit }}</span>
+                                    </div>
+                                    <div class="h-2 rounded-full bg-gray-100 dark:bg-slate-700 overflow-hidden">
+                                        <div class="h-full rounded-full" :class="quotaBarClass(item)" :style="{ width: quotaPct(item) + '%' }"></div>
+                                    </div>
+                                </div>
+                                <div class="text-[10px] text-gray-400 dark:text-slate-500">更新于 {{ new Date(quota.data.updatedAt).toLocaleString('zh-CN', { hour12: false }) }}</div>
+                            </div>
+                            <div v-else class="text-center py-6 text-xs text-gray-400 dark:text-slate-500 font-bold">暂无额度数据，点击右上角手动查询</div>
                         </div>
                     </div>
                     <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
@@ -2005,6 +2042,23 @@ const UI_HTML = `
                         </div>
                         <button @click="saveUsers" class="btn-primary w-full text-white p-3.5 rounded-2xl font-bold text-sm">💾 保存所有子账号</button>
                     </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <h3 class="font-extrabold text-sm text-gray-800 dark:text-slate-200">☁️ Cloudflare API（帐户额度）</h3>
+                            <span v-if="cf.configured" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-green-100 dark:bg-green-950/70 text-green-700 dark:text-green-400 shrink-0">已配置{{ cf.accountName ? ' · ' + cf.accountName : '' }}</span>
+                            <span v-else class="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 shrink-0">未配置</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">用于查询帐户额度。Token 留空表示不修改；未配置时额度页显示演示数据。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3.5">
+                            <input v-model="cf.accountId" placeholder="Account ID" autocapitalize="off" spellcheck="false" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
+                            <input v-model="cf.apiToken" type="password" placeholder="API Token（留空不修改）" autocapitalize="off" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
+                        </div>
+                        <div v-if="cf.testMsg" class="text-[11px] font-bold mb-3" :class="cf.testOk ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'">{{ cf.testMsg }}</div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button @click="testCfConnection" :disabled="cf.testing" class="btn-press p-3.5 rounded-2xl font-bold text-sm border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 disabled:opacity-50">{{ cf.testing ? '测试中…' : '🔗 测试连接' }}</button>
+                            <button @click="saveCfSettings" :disabled="cf.saving" class="btn-primary text-white p-3.5 rounded-2xl font-bold text-sm disabled:opacity-50">{{ cf.saving ? '保存中…' : '💾 保存' }}</button>
+                        </div>
+                    </div>
                 </div>
                 </main>
             </div>
@@ -2171,6 +2225,8 @@ const UI_HTML = `
                 const hasUnsavedChanges = ref(false);
                 const config = ref({ tasks: [], channels: [] });
                 const logs = ref([]);
+                const quota = ref({ loading: false, data: null, error: '' });
+                const cf = ref({ accountId: '', apiToken: '', configured: false, accountName: '', saving: false, testing: false, testMsg: '', testOk: false });
                 const logLevel = ref('failed');
                 const manualRunning = ref(false);
                 const isLoggedIn = ref(null); // null=会话检查中，false=未登录，true=已登录
@@ -2276,7 +2332,7 @@ const UI_HTML = `
                     loginForm.value = { user: '', pass: '' };
                     toast('已安全退出', 'info');
                 };
-                const loadAllData = () => { loadConfig(); fetchLogs(); fetchUsers(); fetchLogLevel(); };
+                const loadAllData = () => { loadConfig(); fetchLogs(); fetchUsers(); fetchLogLevel(); fetchQuota(); fetchCfSettings(); };
 
                 const fetchUsers = async () => {
                     try {
@@ -2394,6 +2450,59 @@ const UI_HTML = `
                             logLevel.value = data.level || 'failed';
                         }
                     } catch (e) {}
+                };
+                const fetchQuota = async () => {
+                    if (quota.value.loading) return;
+                    quota.value.loading = true;
+                    quota.value.error = '';
+                    try {
+                        const res = await fetch('/api/quota');
+                        if (res.ok) { quota.value.data = await res.json(); }
+                        else { quota.value.error = '查询失败（' + res.status + '）'; }
+                    } catch (e) { quota.value.error = '网络异常，请稍后重试'; }
+                    finally { quota.value.loading = false; }
+                };
+                const quotaPct = (item) => item.used == null ? 0 : Math.min(100, Math.round(item.used / item.limit * 100));
+                const quotaBarClass = (item) => item.used == null ? 'bg-gray-300 dark:bg-slate-600' : ((item.used / item.limit) > 0.8 ? 'bg-red-500' : ((item.used / item.limit) > 0.5 ? 'bg-amber-500' : 'bg-indigo-500'));
+                const quotaUsedText = (item) => item.used == null ? '—' : item.used;
+                const fetchCfSettings = async () => {
+                    try {
+                        const res = await fetch('/api/settings');
+                        if (res.ok) {
+                            const data = await res.json();
+                            cf.value.accountId = data.cf_account_id || '';
+                            cf.value.configured = !!data.cf_configured;
+                            cf.value.accountName = data.cf_account_name || '';
+                            cf.value.apiToken = '';
+                        }
+                    } catch (e) {}
+                };
+                const saveCfSettings = async () => {
+                    if (cf.value.saving) return;
+                    if (!cf.value.accountId.trim()) return toast('请填写 Account ID', 'error');
+                    cf.value.saving = true;
+                    cf.value.testMsg = '';
+                    try {
+                        const res = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cf_account_id: cf.value.accountId.trim(), cf_api_token: cf.value.apiToken }) });
+                        const data = await res.json().catch(() => ({}));
+                        if (res.ok) { cf.value.apiToken = ''; cf.value.configured = true; cf.value.accountName = data.cf_account_name || cf.value.accountName; toast('Cloudflare API 已保存', 'success'); fetchQuota(); }
+                        else toast(data.error || '保存失败', 'error');
+                    } catch (e) { toast('保存失败，请重试', 'error'); }
+                    finally { cf.value.saving = false; }
+                };
+                const testCfConnection = async () => {
+                    if (cf.value.testing) return;
+                    if (!cf.value.accountId.trim()) return toast('请填写 Account ID', 'error');
+                    cf.value.testing = true;
+                    cf.value.testMsg = '';
+                    try {
+                        const res = await fetch('/api/test-cf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cf_account_id: cf.value.accountId.trim(), cf_api_token: cf.value.apiToken }) });
+                        const data = await res.json().catch(() => ({}));
+                        cf.value.testOk = res.ok && !!data.ok;
+                        cf.value.testMsg = (res.ok && data.ok) ? ('连接成功' + (data.account_name ? '：' + data.account_name : '')) : ('连接失败：' + (data.error || res.status));
+                        if (res.ok && data.ok && data.account_name) cf.value.accountName = data.account_name;
+                    } catch (e) { cf.value.testOk = false; cf.value.testMsg = '网络异常，请稍后重试'; }
+                    finally { cf.value.testing = false; }
                 };
                 const manualCheck = async (idx) => {
                     if (manualRunning.value) return;
@@ -2543,6 +2652,8 @@ const UI_HTML = `
                     selectedTaskIndices, selectAllTasks, showBatchModal, batchMode, batchNotifyChannels,
                     openBatchChannelModal, confirmBatchAssign, batchRemoveTasks,
                     manualCheck, manualRunning, refreshAll, isRefreshing, isSaving, loginShake,
+                    quota, fetchQuota, quotaPct, quotaBarClass, quotaUsedText,
+                    cf, fetchCfSettings, saveCfSettings, testCfConnection,
                     toasts, toast, dismissToast, confirmDlg, askConfirm, answerConfirm, cancelConfirm,
                     clearLogs, clearLogsReal, doLogoutReal, removeTaskReal, removeChannelReal,
                     statTotal, okCount, downCount, allDown, isPaused, channelIcon, switchTab
@@ -2568,7 +2679,8 @@ async function ensureTables(db) {
             db.prepare("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, url TEXT NOT NULL, interval INTEGER NOT NULL DEFAULT 5, notify_channels TEXT NOT NULL DEFAULT '[]', status TEXT NOT NULL DEFAULT 'pending', last_check INTEGER NOT NULL DEFAULT 0)"),
             db.prepare("CREATE TABLE IF NOT EXISTS channels (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, type TEXT NOT NULL, token TEXT NOT NULL DEFAULT '', url TEXT NOT NULL DEFAULT '', chat_id TEXT NOT NULL DEFAULT '', from_email TEXT NOT NULL DEFAULT '', to_email TEXT NOT NULL DEFAULT '', topic TEXT NOT NULL DEFAULT '', secret TEXT NOT NULL DEFAULT '', headers TEXT NOT NULL DEFAULT '')"),
             db.prepare("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER NOT NULL, task_name TEXT NOT NULL, status TEXT NOT NULL, detail TEXT NOT NULL DEFAULT '', trigger TEXT NOT NULL DEFAULT 'auto')"),
-            db.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)")
+            db.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)"),
+            db.prepare("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '')")
         ]);
         // 老库升级：users 表补 salt 列（列已存在时忽略错误）
         try { await db.prepare("ALTER TABLE users ADD COLUMN salt TEXT NOT NULL DEFAULT ''").run(); } catch (e) {}
@@ -2685,6 +2797,79 @@ function rowToTask(r) {
         id: r.id, name: r.name, url: r.url, interval: r.interval || 5,
         notifyChannels, status: r.status || 'pending', lastCheck: r.last_check || 0,
         failStreak: r.fail_streak || 0, failSince: r.fail_since || 0
+    };
+}
+
+async function getSetting(db, key) {
+    const row = await db.prepare('SELECT value FROM settings WHERE key = ?').bind(key).first();
+    return row ? row.value : '';
+}
+async function setSetting(db, key, value) {
+    await db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').bind(key, value).run();
+}
+
+// 演示额度：未配置 Cloudflare API 时展示
+function demoQuota() {
+    return {
+        demo: true,
+        updatedAt: Date.now(),
+        items: [
+            { name: 'Workers 请求', used: 42318, limit: 100000, unit: '次/天' },
+            { name: 'D1 数据读取', used: 182340, limit: 5000000, unit: '行/天' },
+            { name: 'D1 数据写入', used: 8930, limit: 100000, unit: '行/天' },
+            { name: 'D1 存储空间', used: 18.6, limit: 5120, unit: 'MB' }
+        ]
+    };
+}
+
+async function cfFetchJson(url, token, body) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    try {
+        const res = await fetch(url, {
+            method: body ? 'POST' : 'GET',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: body ? JSON.stringify(body) : undefined,
+            signal: ctrl.signal
+        });
+        const data = await res.json().catch(() => ({}));
+        return { status: res.status, data };
+    } finally { clearTimeout(timer); }
+}
+
+async function cfAccountInfo(accountId, token) {
+    try {
+        const r = await cfFetchJson('https://api.cloudflare.com/client/v4/accounts/' + encodeURIComponent(accountId), token);
+        if (r.status === 200 && r.data.success && r.data.result) {
+            return { ok: true, name: r.data.result.name || '' };
+        }
+        const msg = (r.data.errors && r.data.errors[0] && r.data.errors[0].message) || ('HTTP ' + r.status);
+        return { ok: false, error: msg };
+    } catch (e) { return { ok: false, error: '请求失败：' + e.message }; }
+}
+
+// 真实额度：先校验账户，再尝试拉取 Workers 近 24h 请求数；D1 用量暂无公开 API，按限额展示
+async function cfQuotaLive(accountId, token) {
+    const info = await cfAccountInfo(accountId, token);
+    if (!info.ok) return { ok: false, error: info.error };
+    let workersUsed = null;
+    try {
+        const since = new Date(Date.now() - 86400000).toISOString();
+        const query = 'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:10000){sum{requests}}}}}';
+        const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables: { tag: accountId, since } });
+        const acc = r.status === 200 && r.data.data && r.data.data.viewer && r.data.data.viewer.accounts && r.data.data.viewer.accounts[0];
+        const rows = acc && acc.workersInvocationsAdaptive;
+        if (rows && rows[0] && rows[0].sum) workersUsed = rows[0].sum.requests;
+    } catch (e) { /* 用量查询失败不影响展示限额 */ }
+    return {
+        ok: true,
+        accountName: info.name,
+        items: [
+            { name: 'Workers 请求', used: workersUsed, limit: 100000, unit: '次/天' },
+            { name: 'D1 数据读取', used: null, limit: 5000000, unit: '行/天' },
+            { name: 'D1 数据写入', used: null, limit: 100000, unit: '行/天' },
+            { name: 'D1 存储空间', used: null, limit: 5120, unit: 'MB' }
+        ]
     };
 }
 
@@ -2990,6 +3175,40 @@ export default {
                 }
             }
 
+            if (url.pathname === '/api/settings') {
+                if (request.method === 'GET') {
+                    const accountId = await getSetting(db, 'cf_account_id');
+                    const token = await getSetting(db, 'cf_api_token');
+                    const accountName = await getSetting(db, 'cf_account_name');
+                    // Token 不下发前端：只告诉前端是否已配置
+                    return new Response(JSON.stringify({ cf_account_id: accountId, cf_configured: !!(accountId && token), cf_account_name: accountName }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+                if (request.method === 'POST') {
+                    const body = await request.json();
+                    const accountId = String(body.cf_account_id || '').trim();
+                    if (!accountId) return new Response(JSON.stringify({ error: '请填写 Account ID' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    await setSetting(db, 'cf_account_id', accountId);
+                    let accountName = await getSetting(db, 'cf_account_name');
+                    if (body.cf_api_token) {
+                        const token = String(body.cf_api_token);
+                        await setSetting(db, 'cf_api_token', token);
+                        const check = await cfAccountInfo(accountId, token);
+                        if (check.ok) { accountName = check.name; await setSetting(db, 'cf_account_name', accountName); }
+                    }
+                    return new Response(JSON.stringify({ status: 'ok', cf_account_name: accountName }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+            }
+
+            if (url.pathname === '/api/test-cf' && request.method === 'POST') {
+                const body = await request.json();
+                const accountId = String(body.cf_account_id || '').trim() || await getSetting(db, 'cf_account_id');
+                const token = String(body.cf_api_token || '') || await getSetting(db, 'cf_api_token');
+                if (!accountId || !token) return new Response(JSON.stringify({ ok: false, error: '请填写 Account ID 与 API Token' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                const check = await cfAccountInfo(accountId, token);
+                if (check.ok) await setSetting(db, 'cf_account_name', check.name);
+                return new Response(JSON.stringify(check.ok ? { ok: true, account_name: check.name } : { ok: false, error: check.error }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+            }
+
             if (url.pathname === '/api/test-channel' && request.method === 'POST') {
                 const ch = await request.json();
                 const testTime = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -3068,7 +3287,7 @@ export default {
                 let detailMsg = '';
                 const startTs = Date.now();
                 try {
-                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.1' }, cf: { cacheTtl: 0 } });
+                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.1.0' }, cf: { cacheTtl: 0 } });
                     isSuccess = res.ok;
                     detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
                 } catch (e) {
@@ -3090,6 +3309,21 @@ export default {
                     await sendNotifications(linked, '✅ 手动检查恢复', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr);
                 }
                 return new Response(JSON.stringify({ status: 'ok', success: isSuccess, detail: detailMsg }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+            }
+
+            if (url.pathname === '/api/quota' && request.method === 'GET') {
+                const accountId = await getSetting(db, 'cf_account_id');
+                const token = await getSetting(db, 'cf_api_token');
+                if (accountId && token) {
+                    const live = await cfQuotaLive(accountId, token);
+                    if (live.ok) {
+                        return new Response(JSON.stringify({ demo: false, updatedAt: Date.now(), accountName: live.accountName, items: live.items }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    }
+                    const demo = demoQuota();
+                    demo.error = 'Cloudflare API 查询失败（' + live.error + '），已显示演示数据';
+                    return new Response(JSON.stringify(demo), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+                return new Response(JSON.stringify(demoQuota()), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
         }
 
@@ -3127,7 +3361,7 @@ export default {
             let detailMsg = '';
             const startTs = Date.now();
             try {
-                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.0.1' }, cf: { cacheTtl: 0 } });
+                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.1.0' }, cf: { cacheTtl: 0 } });
                 isSuccess = res.ok;
                 detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
             } catch (e) {

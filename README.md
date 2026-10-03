@@ -1,4 +1,4 @@
-# Worker-Keepalive v1.0.1
+# Worker-Keepalive v1.1.0
 
 站点保活管理系统（Cloudflare Worker + D1）。
 
@@ -69,6 +69,7 @@ npx wrangler deploy
 - 四张统计卡：总任务 / 正常 / 异常 / 通知渠道
 - 任务脉搏：每个任务一行，显示状态、间隔和上次探测时间，点 ⚡ 可单独手动探测
 - 「上次探测」每 60 秒自动刷新一次，不用手动点刷新
+- 💳 帐户额度卡：登录后自动查询一次，右上角可手动刷新；未在「账号」页配置 Cloudflare API 时显示演示数据
 
 ### 保活任务
 
@@ -105,6 +106,7 @@ npx wrangler deploy
 - Root 账号来自环境变量 `ADMIN_USER`，只能在这里看，不能改
 - 可以添加 / 删除子账号，子账号名不能和 Root 同名
 - 登录 Session 有效期 7 天；`ADMIN_PASS` 一换，所有人都要重新登录
+- ☁️ Cloudflare API：在「账号」页填写 Account ID 与 API Token（Token 只存 D1，面板上留空表示不修改），可测试连接；配置后「运行概览」的帐户额度显示真实数据
 
 ## 探测和通知规则
 
