@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.2 (D1) ==========
+// ========== 站点保活管理系统 v1.2.3 (D1) ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1661,7 +1661,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.2 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.3 · D1 存储</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1689,7 +1689,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.2</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.3</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1734,7 +1734,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.2 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.3 · D1 存储</div>
                     </div>
                 </aside>
 
@@ -2543,7 +2543,7 @@ const UI_HTML = `
                         const res = await fetch('/api/test-cf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cf_account_id: cf.value.accountId.trim(), cf_api_token: cf.value.apiToken }) });
                         const data = await res.json().catch(() => ({}));
                         cf.value.testOk = res.ok && !!data.ok;
-                        cf.value.testMsg = (res.ok && data.ok) ? ('连接成功' + (data.account_name ? '：' + data.account_name : '')) : ('连接失败：' + (data.error || res.status));
+                        cf.value.testMsg = (res.ok && data.ok) ? ('连接成功' + (data.account_name ? '：' + data.account_name : '') + (data.warning ? '（' + data.warning + '）' : '')) : ('连接失败：' + (data.error || res.status));
                         if (res.ok && data.ok && data.account_name) cf.value.accountName = data.account_name;
                     } catch (e) { cf.value.testOk = false; cf.value.testMsg = '网络异常，请稍后重试'; }
                     finally { cf.value.testing = false; }
@@ -2899,21 +2899,38 @@ async function cfAccountInfo(accountId, token) {
 }
 
 // 真实额度：先校验账户，再尝试拉取 Workers 近 24h 请求数；D1 用量暂无公开 API，按限额展示
-async function cfQuotaLive(accountId, token) {
-    const info = await cfAccountInfo(accountId, token);
-    if (!info.ok) return { ok: false, error: info.error };
-    let workersUsed = null;
+// GraphQL 轻量探针：验证 token 能否查该账号用量（仅需"帐户分析"读取权限）
+async function cfGraphqlProbe(accountId, token) {
     try {
-        const since = new Date(Date.now() - 86400000).toISOString();
+        const since = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        const query = 'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:1){sum{requests}}}}}';
+        const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables: { tag: accountId, since } });
+        const acc = r.status === 200 && r.data.data && r.data.data.viewer && r.data.data.viewer.accounts && r.data.data.viewer.accounts[0];
+        if (acc) return { ok: true };
+        const msg = (r.data.errors && r.data.errors[0] && r.data.errors[0].message) || ('HTTP ' + r.status);
+        return { ok: false, error: msg };
+    } catch (e) { return { ok: false, error: '请求失败：' + e.message }; }
+}
+
+async function cfQuotaLive(accountId, token) {
+    // 账户名尽力获取（需"帐户设置"读取权限），失败不影响用量查询
+    let accountName = '';
+    try { const info = await cfAccountInfo(accountId, token); if (info.ok) accountName = info.name; } catch (e) {}
+    // 用量查询走 GraphQL（仅需"帐户分析"读取权限）
+    let workersUsed = null;
+    let gqlOk = false;
+    try {
+        const since = new Date(Date.now() - 86400000).toISOString().slice(0, 10); // workersInvocationsAdaptive 的 date_gt 只认 YYYY-MM-DD
         const query = 'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:10000){sum{requests}}}}}';
         const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables: { tag: accountId, since } });
         const acc = r.status === 200 && r.data.data && r.data.data.viewer && r.data.data.viewer.accounts && r.data.data.viewer.accounts[0];
         const rows = acc && acc.workersInvocationsAdaptive;
-        if (rows && rows[0] && rows[0].sum) workersUsed = rows[0].sum.requests;
+        if (rows && rows[0] && rows[0].sum) { workersUsed = rows[0].sum.requests; gqlOk = true; }
     } catch (e) { /* 用量查询失败不影响展示限额 */ }
+    if (!gqlOk) return { ok: false, error: '用量查询失败（需要"帐户分析"读取权限）' };
     return {
         ok: true,
-        accountName: info.name,
+        accountName,
         items: [
             { name: 'Workers 请求', used: workersUsed, limit: 100000, unit: '次/天' },
             { name: 'D1 数据读取', used: null, limit: 5000000, unit: '行/天' },
@@ -3268,8 +3285,16 @@ export default {
                 const token = String(body.cf_api_token || '') || await getSetting(db, 'cf_api_token');
                 if (!accountId || !token) return new Response(JSON.stringify({ ok: false, error: '请填写 Account ID 与 API Token' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 const check = await cfAccountInfo(accountId, token);
-                if (check.ok) await setSetting(db, 'cf_account_name', check.name);
-                return new Response(JSON.stringify(check.ok ? { ok: true, account_name: check.name } : { ok: false, error: check.error }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                if (check.ok) {
+                    await setSetting(db, 'cf_account_name', check.name);
+                    return new Response(JSON.stringify({ ok: true, account_name: check.name }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+                // REST 不通（如缺"帐户设置"权限）时，用 GraphQL 探针再试（仅需"帐户分析"）
+                const probe = await cfGraphqlProbe(accountId, token);
+                if (probe.ok) {
+                    return new Response(JSON.stringify({ ok: true, account_name: '', warning: '缺少"帐户设置"读取权限，无法显示账户名，但额度查询可用' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+                return new Response(JSON.stringify({ ok: false, error: check.error }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
 
             if (url.pathname === '/api/test-channel' && request.method === 'POST') {

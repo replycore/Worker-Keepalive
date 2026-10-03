@@ -1,4 +1,4 @@
-# Worker-Keepalive v1.2.2
+# Worker-Keepalive v1.2.3
 
 站点保活管理系统（Cloudflare Worker + D1）。
 
@@ -69,7 +69,7 @@ npx wrangler deploy
 - 四张统计卡：总任务 / 正常 / 异常 / 通知渠道
 - 任务脉搏：每个任务一行，显示状态、间隔和上次探测时间，点 ⚡ 可单独手动探测
 - 「上次探测」每 60 秒自动刷新一次，不用手动点刷新
-- 💳 帐户额度卡：登录后自动查询一次，右上角可手动刷新；未在「账号」页配置 Cloudflare API 时显示演示数据
+- 💳 帐户额度卡：登录后自动查询一次，右上角可手动刷新；未在「账号」页配置 Cloudflare API 时不显示
 
 ### 保活任务
 
@@ -109,7 +109,7 @@ npx wrangler deploy
 - 子账号可以查看帐户额度卡，但不能修改 Cloudflare API 配置（「账号」页仅 Root 可见）；可以清空自己任务的日志
 - Root 可在任务页、日志页用「👤 按账号查看」下拉框分账号查看全部数据；按某账号过滤时保存/导入/清空只影响该账号
 - 登录 Session 有效期 7 天；`ADMIN_PASS` 一换，所有人都要重新登录
-- ☁️ Cloudflare API：在「账号」页填写 Account ID 与 API Token（Token 只存 D1，面板上留空表示不修改），可测试连接；配置后「运行概览」的帐户额度显示真实数据
+- ☁️ Cloudflare API：在「账号」页填写 Account ID 与 API Token（Token 只存 D1，面板上留空表示不修改），可测试连接；配置后「运行概览」的帐户额度显示真实数据。Token 权限：必需"帐户分析"读取（查 Workers 请求数）；可选"帐户设置"读取（显示账户名，没有也能用）
 
 ## 探测和通知规则
 
