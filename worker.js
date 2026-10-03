@@ -2899,43 +2899,76 @@ async function cfAccountInfo(accountId, token) {
 }
 
 // 真实额度：先校验账户，再尝试拉取 Workers 近 24h 请求数；D1 用量暂无公开 API，按限额展示
+// GraphQL 通用调用：返回 data.viewer，失败抛错（含 API 返回的错误信息）
+async function cfGraphql(token, query, variables) {
+    const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables });
+    if (r.status === 200 && r.data && r.data.data && !r.data.errors) return r.data.data;
+    const msg = (r.data && r.data.errors && r.data.errors[0] && r.data.errors[0].message) || ('HTTP ' + r.status);
+    throw new Error(msg);
+}
+// 对某数据集所有行的指定聚合字段求和（无维度时通常只有一行；多行时累加更稳妥）
+function sumDataset(data, dataset, field, agg) {
+    try {
+        const acc = data.viewer.accounts[0];
+        const rows = acc && acc[dataset];
+        if (!Array.isArray(rows)) return null;
+        let total = 0, found = false;
+        for (const row of rows) {
+            const v = row && row[agg || 'sum'] && row[agg || 'sum'][field];
+            if (typeof v === 'number') { total += v; found = true; }
+        }
+        return found ? total : null;
+    } catch (e) { return null; }
+}
 // GraphQL 轻量探针：验证 token 能否查该账号用量（仅需"帐户分析"读取权限）
 async function cfGraphqlProbe(accountId, token) {
     try {
         const since = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-        const query = 'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:1){sum{requests}}}}}';
-        const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables: { tag: accountId, since } });
-        const acc = r.status === 200 && r.data.data && r.data.data.viewer && r.data.data.viewer.accounts && r.data.data.viewer.accounts[0];
-        if (acc) return { ok: true };
-        const msg = (r.data.errors && r.data.errors[0] && r.data.errors[0].message) || ('HTTP ' + r.status);
-        return { ok: false, error: msg };
-    } catch (e) { return { ok: false, error: '请求失败：' + e.message }; }
+        const data = await cfGraphql(token,
+            'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:1){sum{requests}}}}}',
+            { tag: accountId, since });
+        return sumDataset(data, 'workersInvocationsAdaptive', 'requests') != null ? { ok: true } : { ok: false, error: '无数据' };
+    } catch (e) { return { ok: false, error: e.message }; }
 }
 
 async function cfQuotaLive(accountId, token) {
     // 账户名尽力获取（需"帐户设置"读取权限），失败不影响用量查询
     let accountName = '';
     try { const info = await cfAccountInfo(accountId, token); if (info.ok) accountName = info.name; } catch (e) {}
-    // 用量查询走 GraphQL（仅需"帐户分析"读取权限）
+    // 用量查询走 GraphQL（仅需"帐户分析"读取权限）；三个数据集各自独立查询，互不影响
+    const since = new Date(Date.now() - 86400000).toISOString().slice(0, 10); // 日期过滤只认 YYYY-MM-DD
     let workersUsed = null;
-    let gqlOk = false;
     try {
-        const since = new Date(Date.now() - 86400000).toISOString().slice(0, 10); // workersInvocationsAdaptive 的 date_gt 只认 YYYY-MM-DD
-        const query = 'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:10000){sum{requests}}}}}';
-        const r = await cfFetchJson('https://api.cloudflare.com/client/v4/graphql', token, { query, variables: { tag: accountId, since } });
-        const acc = r.status === 200 && r.data.data && r.data.data.viewer && r.data.data.viewer.accounts && r.data.data.viewer.accounts[0];
-        const rows = acc && acc.workersInvocationsAdaptive;
-        if (rows && rows[0] && rows[0].sum) { workersUsed = rows[0].sum.requests; gqlOk = true; }
-    } catch (e) { /* 用量查询失败不影响展示限额 */ }
-    if (!gqlOk) return { ok: false, error: '用量查询失败（需要"帐户分析"读取权限）' };
+        const data = await cfGraphql(token,
+            'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){workersInvocationsAdaptive(filter:{date_gt:$since},limit:10000){sum{requests}}}}}',
+            { tag: accountId, since });
+        workersUsed = sumDataset(data, 'workersInvocationsAdaptive', 'requests');
+    } catch (e) { /* 失败则该项显示"—" */ }
+    let d1Read = null, d1Written = null;
+    try {
+        const data = await cfGraphql(token,
+            'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){d1AnalyticsAdaptiveGroups(filter:{date_geq:$since},limit:1000){sum{rowsRead rowsWritten}}}}}',
+            { tag: accountId, since });
+        d1Read = sumDataset(data, 'd1AnalyticsAdaptiveGroups', 'rowsRead');
+        d1Written = sumDataset(data, 'd1AnalyticsAdaptiveGroups', 'rowsWritten');
+    } catch (e) { /* 失败则该项显示"—" */ }
+    let d1StorageMB = null;
+    try {
+        const data = await cfGraphql(token,
+            'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){d1StorageAdaptiveGroups(filter:{date_geq:$since},limit:100){max{databaseSizeBytes}}}}}',
+            { tag: accountId, since });
+        const bytes = sumDataset(data, 'd1StorageAdaptiveGroups', 'databaseSizeBytes', 'max');
+        if (bytes != null) d1StorageMB = Math.round(bytes / 1048576 * 10) / 10;
+    } catch (e) { /* 失败则该项显示"—" */ }
+    if (workersUsed == null && d1Read == null) return { ok: false, error: '用量查询失败（需要"帐户分析"读取权限）' };
     return {
         ok: true,
         accountName,
         items: [
             { name: 'Workers 请求', used: workersUsed, limit: 100000, unit: '次/天' },
-            { name: 'D1 数据读取', used: null, limit: 5000000, unit: '行/天' },
-            { name: 'D1 数据写入', used: null, limit: 100000, unit: '行/天' },
-            { name: 'D1 存储空间', used: null, limit: 5120, unit: 'MB' }
+            { name: 'D1 数据读取', used: d1Read, limit: 5000000, unit: '行/天' },
+            { name: 'D1 数据写入', used: d1Written, limit: 100000, unit: '行/天' },
+            { name: 'D1 存储空间', used: d1StorageMB, limit: 5120, unit: 'MB' }
         ]
     };
 }
