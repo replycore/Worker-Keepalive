@@ -12,3 +12,8 @@ crons = ["*/5 * * * *"]
 
 [vars]
 LOG_LEVEL = "failed"
+
+# Workers Cache：开启后按响应 Cache-Control 决定缓存。
+# /api/* 已全部显式 no-store（鉴权接口永不进缓存），只缓存 UI 外壳。
+[cache]
+enabled = true

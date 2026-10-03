@@ -2884,18 +2884,18 @@ export default {
         const db = env.DB;
 
         if (url.pathname.startsWith('/api/')) {
-            if (!db) return new Response('{"error":"D1 database not bound (DB)"}', { status: 500, headers: { 'Content-Type': 'application/json' } });
+            if (!db) return new Response('{"error":"D1 database not bound (DB)"}', { status: 500, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             await ensureTables(db);
             // CSRF 防护：非 GET 请求若带 Origin/Referer，host 必须与本站一致
             if (request.method !== 'GET' && request.method !== 'HEAD' && !isSameOriginRequest(request)) {
-                return new Response('{"error":"Cross-origin request rejected"}', { status: 403, headers: { 'Content-Type': 'application/json' } });
+                return new Response('{"error":"Cross-origin request rejected"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
         }
 
         if (url.pathname === '/api/login' && request.method === 'POST') {
             const ip = clientIp(request);
             if (loginLocked(ip)) {
-                return new Response(JSON.stringify({ status: 'error', message: '尝试次数过多，请 15 分钟后再试' }), { status: 429, headers: { 'Content-Type': 'application/json' } });
+                return new Response(JSON.stringify({ status: 'error', message: '尝试次数过多，请 15 分钟后再试' }), { status: 429, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
             const { user, pass } = await request.json();
             let ok = user === adminUser && pass === adminPass;
@@ -2925,25 +2925,25 @@ export default {
                 const fullToken = btoa(user + ':' + ts + ':' + sign);
                 return new Response('{"status":"ok"}', {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json', 'Cache-Control': 'no-store',
                         'Set-Cookie': 'KA_SESSION=' + encodeURIComponent(fullToken) + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800'
                     }
                 });
             }
             recordLoginFailure(ip);
-            return new Response('{"status":"error"}', { status: 401, headers: { 'Content-Type': 'application/json' } });
+            return new Response('{"status":"error"}', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
         }
 
         if (url.pathname === '/api/logout' && request.method === 'POST') {
             return new Response('{"status":"ok"}', {
-                headers: { 'Content-Type': 'application/json', 'Set-Cookie': 'KA_SESSION=; Path=/; HttpOnly; Max-Age=0' }
+                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Set-Cookie': 'KA_SESSION=; Path=/; HttpOnly; Max-Age=0' }
             });
         }
 
         if (url.pathname === '/api/log-level') {
             const tokenUser = await verifySession(db, adminUser, adminPass, request);
-            if (!tokenUser) return new Response('{"error":"Unauthorized"}', { status: 401, headers: { 'Content-Type': 'application/json' } });
-            return new Response(JSON.stringify({ level: env.LOG_LEVEL || 'failed' }), { headers: { 'Content-Type': 'application/json' } });
+            if (!tokenUser) return new Response('{"error":"Unauthorized"}', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+            return new Response(JSON.stringify({ level: env.LOG_LEVEL || 'failed' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
         }
 
         if (url.pathname.startsWith('/api/')) {
@@ -2951,17 +2951,17 @@ export default {
             const valid = !!tokenUser;
             if (url.pathname === '/api/check-session') {
                 return valid
-                    ? new Response(JSON.stringify({ user: tokenUser }), { headers: { 'Content-Type': 'application/json' } })
-                    : new Response('unauthorized', { status: 401 });
+                    ? new Response(JSON.stringify({ user: tokenUser }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } })
+                    : new Response('unauthorized', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
-            if (!valid) return new Response('{"error":"Session Expired"}', { status: 401, headers: { 'Content-Type': 'application/json' } });
+            if (!valid) return new Response('{"error":"Session Expired"}', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
             if (url.pathname === '/api/users') {
                 if (request.method === 'GET') {
                     // 只返回用户名：密码哈希也不下发到前端
                     const res = await db.prepare('SELECT username FROM users ORDER BY id ASC').all();
                     const users = (res.results || []).map(r => ({ username: r.username }));
-                    return new Response(JSON.stringify({ rootUser: adminUser, users }), { headers: { 'Content-Type': 'application/json' } });
+                    return new Response(JSON.stringify({ rootUser: adminUser, users }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
                     const payload = await request.json();
@@ -2972,7 +2972,7 @@ export default {
                     for (const u of payload || []) {
                         if (!u.username) continue;
                         if (u.username === adminUser) {
-                            return new Response(JSON.stringify({ error: '子账号不能与 Root 同名' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                            return new Response(JSON.stringify({ error: '子账号不能与 Root 同名' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                         }
                         let hpw, salt;
                         if (u.password) {
@@ -2980,13 +2980,13 @@ export default {
                             hpw = await hashPassword(u.password, salt);
                         } else {
                             const ex = exMap.get(u.username);
-                            if (!ex) return new Response(JSON.stringify({ error: '新用户 "' + u.username + '" 必须设置密码' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                            if (!ex) return new Response(JSON.stringify({ error: '新用户 "' + u.username + '" 必须设置密码' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                             hpw = ex.password; salt = ex.salt || '';
                         }
                         stmts.push(db.prepare('INSERT INTO users (username, password, salt) VALUES (?, ?, ?)').bind(u.username, hpw, salt));
                     }
                     await db.batch(stmts);
-                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json' } });
+                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
@@ -2995,8 +2995,8 @@ export default {
                 const testTime = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
                 const results = await sendNotifications([ch], '🔧 渠道配置连通性测试', '测试消息\n【时间】' + testTime);
                 const first = results[0];
-                if (first && first.status === 'fulfilled') return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json' } });
-                return new Response(JSON.stringify({ status: 'error', message: first ? String(first.reason && first.reason.message) : '失败' }), { headers: { 'Content-Type': 'application/json' } });
+                if (first && first.status === 'fulfilled') return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                return new Response(JSON.stringify({ status: 'error', message: first ? String(first.reason && first.reason.message) : '失败' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
 
             if (url.pathname === '/api/logs') {
@@ -3005,21 +3005,21 @@ export default {
                     const list = (res.results || []).map(r => ({
                         time: r.time, taskName: r.task_name, status: r.status, detail: r.detail, trigger: r.trigger || 'auto'
                     }));
-                    return new Response(JSON.stringify(list), { headers: { 'Content-Type': 'application/json' } });
+                    return new Response(JSON.stringify(list), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'DELETE') {
                     await db.prepare('DELETE FROM logs').run();
-                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json' } });
+                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
             if (url.pathname === '/api/config') {
                 if (request.method === 'GET') {
-                    return new Response(JSON.stringify(await loadConfigFromD1(db)), { headers: { 'Content-Type': 'application/json' } });
+                    return new Response(JSON.stringify(await loadConfigFromD1(db)), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
                     await saveConfigToD1(db, await request.json());
-                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json' } });
+                    return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
@@ -3029,7 +3029,7 @@ export default {
                 const filename = 'keepalive-config-' + new Date().toISOString().slice(0, 10) + '.json';
                 return new Response(JSON.stringify(payload, null, 2), {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json', 'Cache-Control': 'no-store',
                         'Content-Disposition': 'attachment; filename="' + filename + '"'
                     }
                 });
@@ -3039,28 +3039,28 @@ export default {
                 let body;
                 try {
                     const text = await request.text();
-                    if (text.length > 512 * 1024) return new Response(JSON.stringify({ error: '文件过大（上限 512KB）' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    if (text.length > 512 * 1024) return new Response(JSON.stringify({ error: '文件过大（上限 512KB）' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                     body = JSON.parse(text);
                 }
-                catch (e) { return new Response(JSON.stringify({ error: 'JSON 解析失败' }), { status: 400, headers: { 'Content-Type': 'application/json' } }); }
+                catch (e) { return new Response(JSON.stringify({ error: 'JSON 解析失败' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } }); }
                 const rawTasks = Array.isArray(body.tasks) ? body.tasks : [];
                 const rawChannels = Array.isArray(body.channels) ? body.channels : [];
                 if (!Array.isArray(body.tasks) || !Array.isArray(body.channels)) {
-                    return new Response(JSON.stringify({ error: '配置格式错误：需要 tasks 与 channels 数组' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    return new Response(JSON.stringify({ error: '配置格式错误：需要 tasks 与 channels 数组' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 // 仅保留合法条目：任务必须有名称和 URL，渠道必须有名称和类型；其余字段由 saveConfigToD1 按缺省值补齐
                 const tasks = rawTasks.filter(t => t && typeof t.name === 'string' && t.name.trim() && typeof t.url === 'string' && t.url.trim());
                 const channels = rawChannels.filter(c => c && typeof c.name === 'string' && c.name.trim() && typeof c.type === 'string' && c.type.trim());
                 const skipped = (rawTasks.length - tasks.length) + (rawChannels.length - channels.length);
                 await saveConfigToD1(db, { tasks, channels });
-                return new Response(JSON.stringify({ status: 'ok', tasks: tasks.length, channels: channels.length, skipped }), { headers: { 'Content-Type': 'application/json' } });
+                return new Response(JSON.stringify({ status: 'ok', tasks: tasks.length, channels: channels.length, skipped }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
 
             if (url.pathname === '/api/manual-check' && request.method === 'POST') {
                 const { taskIndex } = await request.json();
                 const config = await loadConfigFromD1(db);
                 if (!config.tasks[taskIndex]) {
-                    return new Response(JSON.stringify({ error: '任务不存在' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+                    return new Response(JSON.stringify({ error: '任务不存在' }), { status: 404, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 const task = config.tasks[taskIndex];
                 const oldStatus = task.status;
@@ -3089,11 +3089,13 @@ export default {
                 } else if (isSuccess && oldStatus === 'down') { // 修复：持续 down 时不再误发“恢复”通知
                     await sendNotifications(linked, '✅ 手动检查恢复', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr);
                 }
-                return new Response(JSON.stringify({ status: 'ok', success: isSuccess, detail: detailMsg }), { headers: { 'Content-Type': 'application/json' } });
+                return new Response(JSON.stringify({ status: 'ok', success: isSuccess, detail: detailMsg }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
         }
 
-        return new Response(UI_HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+        // UI 外壳：所有人拿到的字节完全相同（数据全走 /api/），唯一可安全缓存的响应。
+        // Workers Cache 的缓存键默认含 Worker 版本，重新部署自动换键。
+        return new Response(UI_HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' } });
     },
 
     async scheduled(event, env) {
