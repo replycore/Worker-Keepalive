@@ -1,4 +1,4 @@
-# Worker-Keepalive v1.2.1
+# Worker-Keepalive v1.2.2
 
 站点保活管理系统（Cloudflare Worker + D1）。
 
