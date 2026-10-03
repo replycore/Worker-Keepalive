@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.0 (D1) ==========
+// ========== 站点保活管理系统 v1.2.1 (D1) ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1661,7 +1661,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.0 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.1 · D1 存储</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1689,7 +1689,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.0</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.1</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1734,7 +1734,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.0 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.1 · D1 存储</div>
                     </div>
                 </aside>
 
@@ -1763,7 +1763,7 @@ const UI_HTML = `
                             <div class="text-3xl font-black text-amber-500 dark:text-amber-400"><span class="num-pop" :key="'c'+config.channels.length">{{ config.channels.length }}</span></div>
                         </div>
                     </div>
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                    <div v-if="quota.configured" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
                         <div class="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-100 dark:border-slate-700/70">
                             <h2 class="text-sm font-extrabold text-gray-800 dark:text-slate-200">💳 帐户额度</h2>
                             <button @click="fetchQuota" :disabled="quota.loading" class="btn-press text-[11px] font-bold px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-slate-700/70 text-indigo-600 dark:text-indigo-300 border border-indigo-100 dark:border-transparent disabled:opacity-50 flex items-center gap-1">
@@ -2074,7 +2074,7 @@ const UI_HTML = `
                             <span v-if="cf.configured" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-green-100 dark:bg-green-950/70 text-green-700 dark:text-green-400 shrink-0">已配置{{ cf.accountName ? ' · ' + cf.accountName : '' }}</span>
                             <span v-else class="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 shrink-0">未配置</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">用于查询帐户额度。Token 留空表示不修改；未配置时额度页显示演示数据。</p>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">用于查询帐户额度。Token 留空表示不修改；未配置时运行概览不显示帐户额度卡。</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3.5">
                             <input v-model="cf.accountId" placeholder="Account ID" autocapitalize="off" spellcheck="false" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
                             <input v-model="cf.apiToken" type="password" placeholder="API Token（留空不修改）" autocapitalize="off" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
@@ -2251,7 +2251,7 @@ const UI_HTML = `
                 const hasUnsavedChanges = ref(false);
                 const config = ref({ tasks: [], channels: [] });
                 const logs = ref([]);
-                const quota = ref({ loading: false, data: null, error: '' });
+                const quota = ref({ loading: false, data: null, error: '', configured: false });
                 const cf = ref({ accountId: '', apiToken: '', configured: false, accountName: '', saving: false, testing: false, testMsg: '', testOk: false });
                 const logLevel = ref('failed');
                 const manualRunning = ref(false);
@@ -2497,7 +2497,11 @@ const UI_HTML = `
                     quota.value.error = '';
                     try {
                         const res = await fetch('/api/quota');
-                        if (res.ok) { quota.value.data = await res.json(); }
+                        if (res.ok) {
+                            const data = await res.json();
+                            quota.value.configured = data.configured !== false;
+                            quota.value.data = quota.value.configured ? data : null;
+                        }
                         else { quota.value.error = '查询失败（' + res.status + '）'; }
                     } catch (e) { quota.value.error = '网络异常，请稍后重试'; }
                     finally { quota.value.loading = false; }
@@ -3391,16 +3395,18 @@ export default {
             if (url.pathname === '/api/quota' && request.method === 'GET') {
                 const accountId = await getSetting(db, 'cf_account_id');
                 const token = await getSetting(db, 'cf_api_token');
-                if (accountId && token) {
-                    const live = await cfQuotaLive(accountId, token);
-                    if (live.ok) {
-                        return new Response(JSON.stringify({ demo: false, updatedAt: Date.now(), accountName: live.accountName, items: live.items }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-                    }
-                    const demo = demoQuota();
-                    demo.error = 'Cloudflare API 查询失败（' + live.error + '），已显示演示数据';
-                    return new Response(JSON.stringify(demo), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                // 未配置 Cloudflare API：直接告诉前端隐藏额度卡，不再返回演示数据
+                if (!accountId || !token) {
+                    return new Response(JSON.stringify({ configured: false }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
-                return new Response(JSON.stringify(demoQuota()), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                const live = await cfQuotaLive(accountId, token);
+                if (live.ok) {
+                    return new Response(JSON.stringify({ configured: true, demo: false, updatedAt: Date.now(), accountName: live.accountName, items: live.items }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+                const demo = demoQuota();
+                demo.configured = true;
+                demo.error = 'Cloudflare API 查询失败（' + live.error + '），已显示演示数据';
+                return new Response(JSON.stringify(demo), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
         }
 
