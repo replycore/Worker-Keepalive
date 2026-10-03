@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.3 (D1) ==========
+// ========== 站点保活管理系统 v1.2.5 ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -31,10 +31,6 @@ const UI_HTML = `
 }
 .inset-0 {
     inset: 0px
-}
-.inset-x-0 {
-    left: 0px;
-    right: 0px
 }
 .inset-x-3 {
     left: 0.75rem;
@@ -881,11 +877,11 @@ const UI_HTML = `
     padding-top: 1.5rem;
     padding-bottom: 1.5rem
 }
-.pb-28 {
-    padding-bottom: 7rem
-}
 .pb-5 {
     padding-bottom: 1.25rem
+}
+.pb-6 {
+    padding-bottom: 1.5rem
 }
 .pl-2\\.5 {
     padding-left: 0.625rem
@@ -1606,6 +1602,8 @@ const UI_HTML = `
         @media (min-width: 640px) { .sheet-in { animation: modal-in .25s cubic-bezier(.2,.9,.3,1.2); } }
         /* iOS Safari 输入框聚焦自动缩放：表单控件字号不小于 16px */
         input, select, textarea { font-size: 16px; }
+        /* 关 preflight 后 body 默认 8px 外边距还在，去掉以免底部导航/顶栏与视口边缘留缝 */
+        body { margin: 0; }
 
 </style>
 </head>
@@ -1661,7 +1659,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.3 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.5</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1681,7 +1679,7 @@ const UI_HTML = `
         </div>
 
         <!-- ============ 主界面 ============ -->
-        <div v-else-if="isLoggedIn" class="animate-fade-in">
+        <div v-else-if="isLoggedIn" class="animate-fade-in flex flex-col min-h-[100dvh]">
             <!-- 顶栏 -->
             <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-gray-200/80 dark:border-slate-800">
                 <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2">
@@ -1689,7 +1687,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.3</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.5</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1712,7 +1710,7 @@ const UI_HTML = `
                 <div v-if="isRefreshing" class="h-0.5 overflow-hidden"><div class="refresh-bar h-full w-1/3 bg-gradient-to-r from-indigo-500 to-fuchsia-500"></div></div>
             </header>
 
-            <div class="max-w-6xl mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-28 md:pb-10 md:flex md:gap-5 md:items-start">
+            <div class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-6 md:pb-10 md:flex md:gap-5 md:items-start flex-1">
                 <!-- 桌面端侧边栏 -->
                 <aside class="hidden md:block w-52 shrink-0 sticky top-[4.5rem]">
                     <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-gray-200 dark:border-slate-700/80 rounded-2xl p-2.5 space-y-1">
@@ -1734,7 +1732,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.3 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.5</div>
                     </div>
                 </aside>
 
@@ -2090,7 +2088,8 @@ const UI_HTML = `
             </div>
 
             <!-- 移动端底部导航 -->
-            <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-slate-800">
+            <!-- iOS Safari 上 fixed bottom-0 会被浏览器底部工具栏盖住，改用 sticky 贴在可视区域底部 -->
+            <nav class="md:hidden sticky bottom-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-slate-800">
                 <div class="grid px-1 pt-1.5" :class="isRoot ? 'grid-cols-5' : 'grid-cols-4'" style="padding-bottom: env(safe-area-inset-bottom);">
                     <button @click="switchTab('dashboard')" class="relative flex flex-col items-center gap-0.5 py-1.5 rounded-xl transition" :class="currentTab === 'dashboard' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
                         <span class="text-xl leading-none">📊</span>
