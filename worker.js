@@ -1698,7 +1698,9 @@ const UI_HTML = `
                     <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
                         <span v-if="hasUnsavedChanges" class="hidden sm:inline text-[11px] text-amber-600 dark:text-amber-400 font-bold animate-pulse mr-1">● 更改待保存</span>
                         <span v-if="hasUnsavedChanges" class="sm:hidden w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-0.5"></span>
-                        <button @click="saveConfig" :disabled="isSaving" class="btn-primary text-white pl-2.5 pr-3 py-2 rounded-xl font-bold text-xs flex items-center gap-1 disabled:opacity-50">
+                        <button @click="onSaveClick" :disabled="isSaving" :title="hasUnsavedChanges ? '保存配置到 D1' : '配置无变更'"
+                            :class="hasUnsavedChanges ? 'btn-primary text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-500 border border-gray-200 dark:border-slate-700'"
+                            class="pl-2.5 pr-3 py-2 rounded-xl font-bold text-xs flex items-center gap-1 transition-colors disabled:opacity-50">
                             <span v-if="isSaving" class="inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                             <span v-else>💾</span><span class="hidden sm:inline">{{ isSaving ? '保存中' : '保存配置' }}</span>
                         </button>
@@ -2443,6 +2445,12 @@ const UI_HTML = `
                     } catch (e) { toast('保存失败，请重试', 'error'); }
                     finally { isSaving.value = false; }
                 };
+                // 没改动时点保存：只提示，不发请求
+                const onSaveClick = () => {
+                    if (isSaving.value) return;
+                    if (!hasUnsavedChanges.value) return toast('无配置变更');
+                    saveConfig();
+                };
                 const importFileInput = ref(null);
                 const exportConfig = async () => {
                     try {
@@ -2711,7 +2719,7 @@ const UI_HTML = `
                     isDark, currentTab, hasUnsavedChanges, toggleTheme, tabClass, formatTime, formatLogTime,
                     isLoggedIn, isLoggingIn, loginForm, loggedInUser, doLogin,
                     sysUsers, rootUsername, isRoot, currentOwner, accountOptions, onOwnerFilterChange, saveUsers, addUser, removeUser,
-                    config, logs, logLevel, loadConfig, fetchLogs, saveConfig,
+                    config, logs, logLevel, loadConfig, fetchLogs, saveConfig, onSaveClick,
                     importFileInput, exportConfig, triggerImport, handleImportFile,
                     newChannel, addChannel, testChannel,
                     showChannelModal, editingChannel, openEditChannelModal, confirmEditChannel, testEditingChannel,
