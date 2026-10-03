@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.9 ==========
+// ========== 站点保活管理系统 v1.2.10 ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1656,7 +1656,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.9</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.10</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1684,7 +1684,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.9</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.10</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1753,7 +1753,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.9</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.10</div>
                     </div>
                 </aside>
 
@@ -1912,7 +1912,7 @@ const UI_HTML = `
                                         <span v-if="isPaused(task)" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/70 text-amber-600 dark:text-amber-400 whitespace-nowrap">已暂停</span>
                                         <span v-else-if="task.status === 'down'" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-red-100 dark:bg-red-950/70 text-red-600 dark:text-red-400 animate-pulse whitespace-nowrap">故障中</span>
                                     </div>
-                                    <a :href="task.url" target="_blank" class="block text-[11px] text-gray-400 dark:text-slate-500 font-mono truncate mt-1">{{ task.url }}</a>
+                                    <a :href="task.url" target="_blank" rel="noopener" class="block text-[11px] text-gray-400 dark:text-slate-500 font-mono truncate mt-1">{{ task.url }}</a>
                                     <div class="text-[11px] mt-1.5 text-indigo-500 dark:text-indigo-400 font-bold truncate">🔔 {{ (task.notifyChannels && task.notifyChannels.length) ? task.notifyChannels.join('、') : '静默不通知' }}</div>
                                     <div class="text-[10px] text-gray-400 dark:text-slate-500 mt-1">上次探测：{{ formatTime(task.lastCheck) }}</div>
                                 </div>
@@ -2360,7 +2360,7 @@ const UI_HTML = `
                         if (res.ok) {
                             const data = await res.json();
                             rootUsername.value = data.rootUser;
-                            sysUsers.value = (data.users || []).map(u => ({ username: u.username, password: '' }));
+                            sysUsers.value = (data.users || []).map(u => ({ username: u.username, password: '', prevName: u.username }));
                             sysUsersOrig.value = (data.users || []).map(u => u.username);
                         }
                     } catch (e) {}
@@ -2372,29 +2372,42 @@ const UI_HTML = `
                         if (!u.username) return toast('用户名不能为空', 'error');
                         if (u.username === rootUsername.value) return toast('子账号不能与 Root 同名', 'error');
                         if (u._new && !u.password) return toast('新用户请设置密码', 'error');
-                        payload.push({ username: u.username, password: u.password || '' });
+                        payload.push({ username: u.username, password: u.password || '', prevName: u.prevName || u.username });
                     }
+                    // 用户名重复：前端先拦一道
+                    const nameSet = new Set(sysUsers.value.map(u => u.username));
+                    if (nameSet.size !== sysUsers.value.length) return toast('用户名重复，请检查', 'error');
                     // 本次被删掉的子账号：保存时会一并清除它的全部数据，先二次确认
-                    const removed = (sysUsersOrig.value || []).filter(n => !sysUsers.value.some(u => u.username === n));
+                    const keptPrev = new Set(sysUsers.value.map(u => u.prevName || u.username));
+                    const removed = (sysUsersOrig.value || []).filter(n => !keptPrev.has(n));
+                    // 本次改名的子账号：数据会一并迁移，也提示一下
+                    const renamed = sysUsers.value.filter(u => u.prevName && u.prevName !== u.username).map(u => u.prevName + ' → ' + u.username);
                     const doSave = async () => {
                         try {
                             const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                             const data = await res.json().catch(() => ({}));
                             if (res.ok) {
-                                sysUsers.value.forEach(u => { u.password = ''; delete u._new; });
+                                sysUsers.value.forEach(u => { u.password = ''; delete u._new; u.prevName = u.username; });
                                 sysUsersOrig.value = sysUsers.value.map(u => u.username);
                                 const del = data.deleted || [];
-                                toast(del.length ? '已删除子账号 ' + del.join('、') + ' 及其全部任务、渠道和日志' : '子账号已保存', 'success');
+                                const ren = data.renamed || [];
+                                const msgs = [];
+                                if (ren.length) msgs.push('已改名 ' + ren.join('、') + '（数据已迁移）');
+                                if (del.length) msgs.push('已删除子账号 ' + del.join('、') + ' 及其全部任务、渠道和日志');
+                                toast(msgs.length ? msgs.join('；') : '子账号已保存', 'success');
                             }
                             else {
                                 toast(data.error || '保存失败，请重试', 'error');
                             }
                         } catch (e) { toast('保存失败，请重试', 'error'); }
                     };
-                    if (removed.length) askConfirm('确定删除子账号 ' + removed.join('、') + '？\\n它的全部保活任务、通知渠道和任务记录将被一并清除，该操作不可恢复。', doSave);
+                    const confirmParts = [];
+                    if (removed.length) confirmParts.push('确定删除子账号 ' + removed.join('、') + '？\\n它的全部保活任务、通知渠道和任务记录将被一并清除，该操作不可恢复。');
+                    if (renamed.length) confirmParts.push('子账号改名：' + renamed.join('、') + '，它的全部数据会一并迁移。');
+                    if (confirmParts.length) askConfirm(confirmParts.join('\\n\\n'), doSave);
                     else doSave();
                 };
-                const addUser = () => sysUsers.value.push({ username: '', password: '', _new: true });
+                const addUser = () => sysUsers.value.push({ username: '', password: '', _new: true, prevName: '' });
                 const removeUser = (idx) => sysUsers.value.splice(idx, 1);
 
                 const loadConfig = async () => {
@@ -2412,11 +2425,15 @@ const UI_HTML = `
                 };
                 const saveConfig = async () => {
                     if (isSaving.value) return;
+                    for (const t of config.value.tasks) {
+                        const tu = String(t.url || '').trim();
+                        if (tu && !/^https?:\\/\\//i.test(tu)) return toast('任务「' + (t.name || tu) + '」的 URL 必须以 http:// 或 https:// 开头', 'error');
+                    }
                     isSaving.value = true;
                     try {
                         const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tasks: config.value.tasks, channels: config.value.channels, owner: ownerScope() }) });
                         if (res.ok) { hasUnsavedChanges.value = false; toast('配置已保存到 D1', 'success'); }
-                        else toast('保存失败，请重试', 'error');
+                        else { const d = await res.json().catch(() => ({})); toast(d.error || '保存失败，请重试', 'error'); }
                     } catch (e) { toast('保存失败，请重试', 'error'); }
                     finally { isSaving.value = false; }
                 };
@@ -2902,6 +2919,20 @@ async function cfGraphql(token, query, variables) {
     throw new Error(msg);
 }
 // 对某数据集所有行的指定聚合字段求和（无维度时通常只有一行；多行时累加更稳妥）
+// 存储是时点快照：多行取最大（sum 会把按天快照加倍）
+function maxDataset(data, dataset, field, agg) {
+    try {
+        const acc = data.viewer.accounts[0];
+        const rows = acc && acc[dataset];
+        if (!Array.isArray(rows)) return null;
+        let best = null;
+        for (const row of rows) {
+            const v = row && row[agg || 'sum'] && row[agg || 'sum'][field];
+            if (typeof v === 'number' && (best == null || v > best)) best = v;
+        }
+        return best;
+    } catch (e) { return null; }
+}
 function sumDataset(data, dataset, field, agg) {
     try {
         const acc = data.viewer.accounts[0];
@@ -2952,7 +2983,7 @@ async function cfQuotaLive(accountId, token) {
         const data = await cfGraphql(token,
             'query($tag:String!,$since:String!){viewer{accounts(filter:{accountTag:$tag}){d1StorageAdaptiveGroups(filter:{date_geq:$since},limit:100){max{databaseSizeBytes}}}}}',
             { tag: accountId, since });
-        const bytes = sumDataset(data, 'd1StorageAdaptiveGroups', 'databaseSizeBytes', 'max');
+        const bytes = maxDataset(data, 'd1StorageAdaptiveGroups', 'databaseSizeBytes', 'max');
         if (bytes != null) d1StorageMB = Math.round(bytes / 1048576 * 10) / 10;
     } catch (e) { /* 失败则该项显示"—" */ }
     if (workersUsed == null && d1Read == null) return { ok: false, error: '用量查询失败（需要"帐户分析"读取权限）' };
@@ -2987,7 +3018,9 @@ async function saveConfigToD1(db, body, scope) {
     const scoped = scope && scope !== 'all';
     // 先按 id 记住服务端已有的探测状态：前端的 status/lastCheck 可能是页面加载时的旧副本，
     // 不能覆盖定时任务刚写入的最新值（否则“上次探测”每次保存都会被打回旧时间）
-    const prevRows = await db.prepare('SELECT id, status, last_check, fail_streak, fail_since FROM tasks').all();
+    const prevRows = scoped
+        ? await db.prepare('SELECT id, status, last_check, fail_streak, fail_since FROM tasks WHERE owner = ?').bind(scope).all()
+        : await db.prepare('SELECT id, status, last_check, fail_streak, fail_since FROM tasks').all();
     const prevMap = new Map((prevRows.results || []).map(r => [r.id, r]));
     // 全部写入一次提交：语句按顺序执行，语义与原来逐条 await 完全一致
     const stmts = scoped
@@ -3256,31 +3289,48 @@ export default {
                 }
                 if (request.method === 'POST') {
                     const payload = await request.json();
+                    const list = (payload || []).filter(u => u && u.username);
+                    const bad = (msg) => new Response(JSON.stringify({ error: msg }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    const names = list.map(u => u.username);
+                    // 用户名在提交里重复：直接 400，避免 UNIQUE 冲突变成裸 500
+                    if (new Set(names).size !== names.length) return bad('用户名重复，请检查');
+                    for (const n of names) {
+                        if (n === adminUser) return bad('子账号不能与 Root 同名');
+                    }
                     // 密码留空表示不修改：按用户名沿用旧哈希；新用户必须设置密码
                     const exRows = await db.prepare('SELECT username, password, salt FROM users').all();
                     const exMap = new Map((exRows.results || []).map(r => [r.username, r]));
-                    const stmts = [db.prepare('DELETE FROM users')];
-                    for (const u of payload || []) {
-                        if (!u.username) continue;
-                        if (u.username === adminUser) {
-                            return new Response(JSON.stringify({ error: '子账号不能与 Root 同名' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-                        }
+                    const stmts = [];
+                    const renamed = [];
+                    // payload 里出现过的旧名（含改名前的）：不算删除
+                    const keptPrev = new Set(list.map(u => u.prevName || u.username));
+                    for (const u of list) {
+                        const prev = (u.prevName && u.prevName !== u.username) ? u.prevName : null;
                         let hpw, salt;
                         if (u.password) {
                             salt = randomSalt();
                             hpw = await hashPassword(u.password, salt);
                         } else {
-                            const ex = exMap.get(u.username);
-                            if (!ex) return new Response(JSON.stringify({ error: '新用户 "' + u.username + '" 必须设置密码' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-                            hpw = ex.password; salt = ex.salt || '';
+                            const base = prev ? exMap.get(prev) : exMap.get(u.username);
+                            if (!base) return bad('新用户 "' + u.username + '" 必须设置密码');
+                            hpw = base.password; salt = base.salt || '';
                         }
-                        stmts.push(db.prepare('INSERT INTO users (username, password, salt) VALUES (?, ?, ?)').bind(u.username, hpw, salt));
+                        if (prev && exMap.has(prev)) {
+                            if (exMap.has(u.username)) return bad('用户名 "' + u.username + '" 已存在');
+                            // 改名：账号行改名 + 它的全部任务/渠道/日志一并迁移（不再是删光）
+                            stmts.push(db.prepare('UPDATE users SET username = ?, password = ?, salt = ? WHERE username = ?').bind(u.username, hpw, salt, prev));
+                            stmts.push(db.prepare('UPDATE tasks SET owner = ? WHERE owner = ?').bind(u.username, prev));
+                            stmts.push(db.prepare('UPDATE channels SET owner = ? WHERE owner = ?').bind(u.username, prev));
+                            stmts.push(db.prepare('UPDATE logs SET owner = ? WHERE owner = ?').bind(u.username, prev));
+                            renamed.push(prev + ' → ' + u.username);
+                        } else {
+                            stmts.push(db.prepare('INSERT OR REPLACE INTO users (username, password, salt) VALUES (?, ?, ?)').bind(u.username, hpw, salt));
+                        }
                     }
                     // 被删除的子账号：级联清除它的全部保活任务、通知渠道和任务记录
-                    const newNames = new Set((payload || []).map(u => u.username).filter(Boolean));
                     const deleted = [];
                     for (const name of exMap.keys()) {
-                        if (!newNames.has(name)) {
+                        if (!keptPrev.has(name)) {
                             deleted.push(name);
                             stmts.push(db.prepare('DELETE FROM tasks WHERE owner = ?').bind(name));
                             stmts.push(db.prepare('DELETE FROM channels WHERE owner = ?').bind(name));
@@ -3288,7 +3338,7 @@ export default {
                         }
                     }
                     await db.batch(stmts);
-                    return new Response(JSON.stringify({ status: 'ok', deleted }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    return new Response(JSON.stringify({ status: 'ok', deleted, renamed }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
@@ -3374,6 +3424,12 @@ export default {
                 }
                 if (request.method === 'POST') {
                     const body = await request.json();
+                    for (const t of (body.tasks || [])) {
+                        const tu = String(t.url || '').trim();
+                        if (tu && !/^https?:\/\//i.test(tu)) {
+                            return new Response(JSON.stringify({ error: '任务「' + (t.name || tu) + '」的 URL 必须以 http:// 或 https:// 开头' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                        }
+                    }
                     let scope = body.owner || 'all';
                     if (tokenUser !== adminUser) scope = tokenUser;
                     await saveConfigToD1(db, body, scope);
