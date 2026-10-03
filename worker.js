@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.1.0 (D1) ==========
+// ========== 站点保活管理系统 v1.2.0 (D1) ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -320,6 +320,9 @@ const UI_HTML = `
 .min-w-\\[18px\\] {
     min-width: 18px
 }
+.max-w-28 {
+    max-width: 7rem
+}
 .max-w-6xl {
     max-width: 72rem
 }
@@ -365,6 +368,9 @@ const UI_HTML = `
 }
 .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr))
+}
+.grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr))
 }
 .grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr))
@@ -770,6 +776,9 @@ const UI_HTML = `
 }
 .p-1 {
     padding: 0.25rem
+}
+.p-2 {
+    padding: 0.5rem
 }
 .p-2\\.5 {
     padding: 0.625rem
@@ -1242,6 +1251,9 @@ const UI_HTML = `
 .dark\\:bg-indigo-950\\/40:is(.dark *) {
     background-color: rgb(30 27 75 / 0.4)
 }
+.dark\\:bg-indigo-950\\/60:is(.dark *) {
+    background-color: rgb(30 27 75 / 0.6)
+}
 .dark\\:bg-purple-950\\/60:is(.dark *) {
     background-color: rgb(59 7 100 / 0.6)
 }
@@ -1649,7 +1661,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-900 dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-7 h-7 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.1.0 · D1 存储</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.0 · D1 存储</p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1677,7 +1689,7 @@ const UI_HTML = `
                         <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="打开 GitHub 仓库" class="w-8 h-8 rounded-xl bg-gray-900 dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-white dark:fill-gray-900"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.1.0</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.0</div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1719,10 +1731,10 @@ const UI_HTML = `
                         <button @click="switchTab('logs')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'logs' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">📜</span>运行日志
                         </button>
-                        <button @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
+                        <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.1.0 · D1 存储</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.0 · D1 存储</div>
                     </div>
                 </aside>
 
@@ -1823,6 +1835,13 @@ const UI_HTML = `
                 </div>
 
                 <div v-if="currentTab === 'tasks'" class="space-y-3.5 sm:space-y-4 animate-fade-in">
+                    <div v-if="isRoot" class="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 px-4 py-3">
+                        <span class="text-[11px] font-bold text-gray-500 dark:text-slate-400 shrink-0">👤 按账号查看</span>
+                        <select v-model="currentOwner" @change="onOwnerFilterChange" class="flex-1 min-w-0 p-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-bold text-gray-800 dark:text-slate-200 outline-none">
+                            <option value="all">全部账号</option>
+                            <option v-for="a in accountOptions" :key="a" :value="a">{{ a }}</option>
+                        </select>
+                    </div>
                     <details class="bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
                         <summary class="no-marker cursor-pointer px-4 sm:px-5 py-4 flex items-center gap-2.5 font-extrabold text-sm text-gray-800 dark:text-slate-200 select-none">
                             <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center text-base shrink-0">➕</span>
@@ -1869,6 +1888,7 @@ const UI_HTML = `
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <span class="w-2 h-2 rounded-full shrink-0" :class="task.status === 'down' ? 'bg-red-500 dot-live-down' : task.status === 'ok' ? 'bg-green-500 dot-live-ok' : 'bg-gray-300 dark:bg-slate-600'"></span>
                                         <span class="font-extrabold text-[15px] text-gray-900 dark:text-white truncate">{{ task.name }}</span>
+                                        <span v-if="isRoot" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 whitespace-nowrap">👤 {{ task.owner || rootUsername }}</span>
                                         <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 whitespace-nowrap">每 {{ task.interval }} 分钟</span>
                                         <span v-if="isPaused(task)" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/70 text-amber-600 dark:text-amber-400 whitespace-nowrap">已暂停</span>
                                         <span v-else-if="task.status === 'down'" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-red-100 dark:bg-red-950/70 text-red-600 dark:text-red-400 animate-pulse whitespace-nowrap">故障中</span>
@@ -1966,6 +1986,7 @@ const UI_HTML = `
                             <span class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500/15 to-fuchsia-500/15 border border-indigo-200/60 dark:border-indigo-800/60 flex items-center justify-center text-xl shrink-0">{{ channelIcon(ch.type) }}</span>
                             <div class="flex-1 min-w-0">
                                 <div class="font-extrabold text-sm text-gray-900 dark:text-white truncate">{{ ch.name }}</div>
+                                <div v-if="isRoot" class="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 mt-0.5">👤 {{ ch.owner || rootUsername }}</div>
                                 <div class="text-[10px] font-bold uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">{{ ch.type }}</div>
                             </div>
                             <div class="flex gap-1.5 shrink-0">
@@ -1989,6 +2010,10 @@ const UI_HTML = `
                             </p>
                         </div>
                         <div class="flex gap-2 shrink-0">
+                            <select v-if="isRoot" v-model="currentOwner" @change="onOwnerFilterChange" class="text-[11px] font-bold px-2 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-slate-300 outline-none max-w-28">
+                                <option value="all">全部账号</option>
+                                <option v-for="a in accountOptions" :key="a" :value="a">{{ a }}</option>
+                            </select>
                             <button @click="fetchLogs" class="btn-press text-[11px] font-bold px-3.5 py-2 rounded-xl bg-indigo-50 dark:bg-slate-700/70 text-indigo-600 dark:text-indigo-300 border border-indigo-100 dark:border-slate-600">🔄 刷新</button>
                             <button @click="clearLogs" class="btn-press text-[11px] font-bold px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/60 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950/40">🗑️ 清空</button>
                         </div>
@@ -1999,6 +2024,7 @@ const UI_HTML = `
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between gap-2">
                                     <span class="text-[13px] font-extrabold text-gray-800 dark:text-slate-200 truncate">{{ item.taskName }}</span>
+                                    <span v-if="isRoot" class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 shrink-0">👤 {{ item.owner || rootUsername }}</span>
                                     <span class="text-[10px] text-gray-400 dark:text-slate-500 font-mono shrink-0">{{ formatLogTime(item.time) }}</span>
                                 </div>
                                 <div class="text-[11px] text-gray-500 dark:text-slate-400 font-mono line-clamp-2 break-all mt-1">{{ item.detail }}</div>
@@ -2015,7 +2041,7 @@ const UI_HTML = `
                     </div>
                 </div>
 
-                <div v-if="currentTab === 'users'" class="space-y-3.5 sm:space-y-4 animate-fade-in">
+                <div v-if="currentTab === 'users' && isRoot" class="space-y-3.5 sm:space-y-4 animate-fade-in">
                     <div class="border border-indigo-200 dark:border-indigo-900 bg-indigo-50/60 dark:bg-indigo-950/20 p-4 sm:p-5 rounded-2xl">
                         <h3 class="font-extrabold text-sm text-indigo-800 dark:text-indigo-300 mb-1">👑 超级管理员（Root）</h3>
                         <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-3.5">密码由环境变量保护，面板内不可修改。</p>
@@ -2065,7 +2091,7 @@ const UI_HTML = `
 
             <!-- 移动端底部导航 -->
             <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-slate-800">
-                <div class="grid grid-cols-5 px-1 pt-1.5" style="padding-bottom: env(safe-area-inset-bottom);">
+                <div class="grid px-1 pt-1.5" :class="isRoot ? 'grid-cols-5' : 'grid-cols-4'" style="padding-bottom: env(safe-area-inset-bottom);">
                     <button @click="switchTab('dashboard')" class="relative flex flex-col items-center gap-0.5 py-1.5 rounded-xl transition" :class="currentTab === 'dashboard' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
                         <span class="text-xl leading-none">📊</span>
                         <span class="text-[10px] font-bold">概览</span>
@@ -2089,7 +2115,7 @@ const UI_HTML = `
                         <span class="text-[10px] font-bold">日志</span>
                         <span class="w-4 h-1 rounded-full mt-0.5" :class="currentTab === 'logs' ? 'bg-indigo-500' : 'bg-transparent'"></span>
                     </button>
-                    <button @click="switchTab('users')" class="relative flex flex-col items-center gap-0.5 py-1.5 rounded-xl transition" :class="currentTab === 'users' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
+                    <button v-if="isRoot" @click="switchTab('users')" class="relative flex flex-col items-center gap-0.5 py-1.5 rounded-xl transition" :class="currentTab === 'users' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-slate-500'">
                         <span class="text-xl leading-none">👥</span>
                         <span class="text-[10px] font-bold">账号</span>
                         <span class="w-4 h-1 rounded-full mt-0.5" :class="currentTab === 'users' ? 'bg-indigo-500' : 'bg-transparent'"></span>
@@ -2235,6 +2261,8 @@ const UI_HTML = `
                 const loggedInUser = ref('');
                 const sysUsers = ref([]);
                 const rootUsername = ref('');
+                const isRoot = ref(false);
+                const currentOwner = ref('all'); // root 账号过滤器：'all' 或某用户名
                 const defaultChannel = () => ({ type: 'telegram', name: '', token: '', url: '', chatId: '', fromEmail: '', toEmail: '', topic: '', secret: '', headers: '' });
                 const newChannel = ref(defaultChannel());
                 const newTask = ref({ name: '', url: '', interval: 5, notifyChannels: [], status: 'pending', lastCheck: 0 });
@@ -2309,6 +2337,7 @@ const UI_HTML = `
                         if (res.ok) {
                             const data = await res.json();
                             loggedInUser.value = data.user;
+                            isRoot.value = !!data.isRoot;
                             isLoggedIn.value = true;
                             loadAllData();
                         } else {
@@ -2321,7 +2350,7 @@ const UI_HTML = `
                     isLoggingIn.value = true;
                     try {
                         const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loginForm.value) });
-                        if (res.ok) { loggedInUser.value = loginForm.value.user; isLoggedIn.value = true; toast('欢迎回来，' + loginForm.value.user + ' 🎉', 'success'); loadAllData(); }
+                        if (res.ok) { toast('欢迎回来，' + loginForm.value.user + ' 🎉', 'success'); checkAuthSession(); }
                         else { loginShake.value = true; setTimeout(() => { loginShake.value = false; }, 500); toast('登录验证失败，请检查账号密码', 'error'); }
                     } catch (e) { toast('网络异常，请稍后重试', 'error'); }
                     finally { isLoggingIn.value = false; }
@@ -2329,10 +2358,16 @@ const UI_HTML = `
                 const doLogoutReal = async () => {
                     await fetch('/api/logout', { method: 'POST' });
                     isLoggedIn.value = false;
+                    isRoot.value = false;
+                    currentOwner.value = 'all';
                     loginForm.value = { user: '', pass: '' };
                     toast('已安全退出', 'info');
                 };
-                const loadAllData = () => { loadConfig(); fetchLogs(); fetchUsers(); fetchLogLevel(); fetchQuota(); fetchCfSettings(); };
+                const loadAllData = () => { loadConfig(); fetchLogs(); fetchLogLevel(); fetchQuota(); if (isRoot.value) { fetchUsers(); fetchCfSettings(); } };
+                const ownerQuery = () => (isRoot.value && currentOwner.value !== 'all' ? '?owner=' + encodeURIComponent(currentOwner.value) : '');
+                const ownerScope = () => (isRoot.value ? currentOwner.value : loggedInUser.value);
+                const accountOptions = computed(() => [rootUsername.value, ...sysUsers.value.map(u => u.username)].filter(Boolean));
+                const onOwnerFilterChange = () => { loadConfig(); fetchLogs(); };
 
                 const fetchUsers = async () => {
                     try {
@@ -2369,7 +2404,7 @@ const UI_HTML = `
 
                 const loadConfig = async () => {
                     try {
-                        const res = await fetch('/api/config');
+                        const res = await fetch('/api/config' + ownerQuery());
                         if (res.ok) {
                             const data = await res.json();
                             if (data.tasks) {
@@ -2384,7 +2419,7 @@ const UI_HTML = `
                     if (isSaving.value) return;
                     isSaving.value = true;
                     try {
-                        const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config.value) });
+                        const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tasks: config.value.tasks, channels: config.value.channels, owner: ownerScope() }) });
                         if (res.ok) { hasUnsavedChanges.value = false; toast('配置已保存到 D1', 'success'); }
                         else toast('保存失败，请重试', 'error');
                     } catch (e) { toast('保存失败，请重试', 'error'); }
@@ -2393,7 +2428,7 @@ const UI_HTML = `
                 const importFileInput = ref(null);
                 const exportConfig = async () => {
                     try {
-                        const res = await fetch('/api/config/export');
+                        const res = await fetch('/api/config/export' + ownerQuery());
                         if (!res.ok) { toast('导出失败，请重试', 'error'); return; }
                         const blob = await res.blob();
                         const a = document.createElement('a');
@@ -2419,9 +2454,11 @@ const UI_HTML = `
                     if (!body || !Array.isArray(body.tasks) || !Array.isArray(body.channels)) {
                         toast('配置格式错误：需要 tasks 与 channels', 'error'); return;
                     }
-                    askConfirm('导入将覆盖当前全部任务与渠道配置，确定继续？', async () => {
+                    const impScope = ownerScope();
+                    const impLabel = impScope === 'all' ? '全部账号' : '账号「' + impScope + '」';
+                    askConfirm('导入将覆盖' + impLabel + '的任务与渠道配置，确定继续？', async () => {
                         try {
-                            const res = await fetch('/api/config/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                            const res = await fetch('/api/config/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tasks: body.tasks, channels: body.channels, owner: impScope }) });
                             const data = await res.json().catch(() => ({}));
                             if (res.ok && data.status === 'ok') {
                                 await loadConfig();
@@ -2432,16 +2469,19 @@ const UI_HTML = `
                 };
                 const fetchLogs = async () => {
                     try {
-                        const res = await fetch('/api/logs');
+                        const res = await fetch('/api/logs' + ownerQuery());
                         if (res.ok) logs.value = await res.json();
                     } catch (e) {}
                 };
                 const clearLogsReal = async () => {
-                    await fetch('/api/logs', { method: 'DELETE' });
+                    await fetch('/api/logs' + ownerQuery(), { method: 'DELETE' });
                     logs.value = [];
                     toast('日志已清空', 'success');
                 };
-                const clearLogs = () => askConfirm('确定清空全部运行日志？', clearLogsReal);
+                const clearLogs = () => {
+                    const s = ownerScope();
+                    askConfirm('确定清空' + (s === 'all' ? '全部账号' : '账号「' + s + '」') + '的运行日志？', clearLogsReal);
+                };
                 const fetchLogLevel = async () => {
                     try {
                         const res = await fetch('/api/log-level');
@@ -2511,7 +2551,7 @@ const UI_HTML = `
                     try {
                         const res = await fetch('/api/manual-check', {
                             method: 'POST', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ taskIndex: idx })
+                            body: JSON.stringify({ taskIndex: idx, owner: ownerScope() })
                         });
                         const data = await res.json();
                         if (res.ok) {
@@ -2557,7 +2597,8 @@ const UI_HTML = `
                 const batchRemoveTasks = () => askConfirm('确定批量删除选中的 ' + selectedTaskIndices.value.length + ' 个任务？', batchRemoveTasksReal);
                 const addChannel = () => {
                     if (!newChannel.value.name) return toast('请填写渠道别名', 'error');
-                    config.value.channels.push({ ...newChannel.value });
+                    const chOwner = (isRoot.value && currentOwner.value !== 'all') ? currentOwner.value : loggedInUser.value;
+                    config.value.channels.push({ ...newChannel.value, owner: chOwner });
                     newChannel.value = defaultChannel();
                     toast('渠道已添加（记得保存配置）', 'success');
                 };
@@ -2594,7 +2635,8 @@ const UI_HTML = `
                 };
                 const addTask = () => {
                     if (!newTask.value.name || !newTask.value.url) return toast('请填写任务名称和 URL', 'error');
-                    config.value.tasks.push({ ...newTask.value });
+                    const taskOwner = (isRoot.value && currentOwner.value !== 'all') ? currentOwner.value : loggedInUser.value;
+                    config.value.tasks.push({ ...newTask.value, owner: taskOwner });
                     newTask.value = { name: '', url: '', interval: 5, notifyChannels: [], status: 'pending', lastCheck: 0 };
                     selectedTaskIndices.value = [];
                     toast('任务已添加（记得保存配置）', 'success');
@@ -2642,7 +2684,7 @@ const UI_HTML = `
                 return {
                     isDark, currentTab, hasUnsavedChanges, toggleTheme, tabClass, formatTime, formatLogTime,
                     isLoggedIn, isLoggingIn, loginForm, loggedInUser, doLogin,
-                    sysUsers, rootUsername, saveUsers, addUser, removeUser,
+                    sysUsers, rootUsername, isRoot, currentOwner, accountOptions, onOwnerFilterChange, saveUsers, addUser, removeUser,
                     config, logs, logLevel, loadConfig, fetchLogs, saveConfig,
                     importFileInput, exportConfig, triggerImport, handleImportFile,
                     newChannel, addChannel, testChannel,
@@ -2682,6 +2724,10 @@ async function ensureTables(db) {
             db.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)"),
             db.prepare("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '')")
         ]);
+        // 多租户：任务/渠道/日志标记所属账号
+        try { await db.prepare("ALTER TABLE tasks ADD COLUMN owner TEXT NOT NULL DEFAULT ''").run(); } catch (e) {}
+        try { await db.prepare("ALTER TABLE channels ADD COLUMN owner TEXT NOT NULL DEFAULT ''").run(); } catch (e) {}
+        try { await db.prepare("ALTER TABLE logs ADD COLUMN owner TEXT NOT NULL DEFAULT ''").run(); } catch (e) {}
         // 老库升级：users 表补 salt 列（列已存在时忽略错误）
         try { await db.prepare("ALTER TABLE users ADD COLUMN salt TEXT NOT NULL DEFAULT ''").run(); } catch (e) {}
         // 老库升级：tasks 表补连续失败计数列（列已存在时忽略错误）
@@ -2785,7 +2831,7 @@ function rowToChannel(r) {
     return {
         name: r.name, type: r.type, token: r.token || '', url: r.url || '',
         chatId: r.chat_id || '', fromEmail: r.from_email || '', toEmail: r.to_email || '',
-        topic: r.topic || '', secret: r.secret || '', headers: r.headers || ''
+        topic: r.topic || '', secret: r.secret || '', headers: r.headers || '', owner: r.owner || ''
     };
 }
 
@@ -2796,7 +2842,7 @@ function rowToTask(r) {
     return {
         id: r.id, name: r.name, url: r.url, interval: r.interval || 5,
         notifyChannels, status: r.status || 'pending', lastCheck: r.last_check || 0,
-        failStreak: r.fail_streak || 0, failSince: r.fail_since || 0
+        failStreak: r.fail_streak || 0, failSince: r.fail_since || 0, owner: r.owner || ''
     };
 }
 
@@ -2873,37 +2919,39 @@ async function cfQuotaLive(accountId, token) {
     };
 }
 
-async function loadConfigFromD1(db) {
+async function loadConfigFromD1(db, owner) {
+    // owner=null 查全部（仅 root），否则只查该账号的
+    const taskQ = owner ? db.prepare('SELECT * FROM tasks WHERE owner = ? ORDER BY id ASC').bind(owner) : db.prepare('SELECT * FROM tasks ORDER BY id ASC');
+    const chQ = owner ? db.prepare('SELECT * FROM channels WHERE owner = ? ORDER BY id ASC').bind(owner) : db.prepare('SELECT * FROM channels ORDER BY id ASC');
     // 两条查询一次往返：db.batch 按顺序返回各语句的执行结果
-    const [tasksRes, channelsRes] = await db.batch([
-        db.prepare('SELECT * FROM tasks ORDER BY id ASC'),
-        db.prepare('SELECT * FROM channels ORDER BY id ASC')
-    ]);
+    const [tasksRes, channelsRes] = await db.batch([taskQ, chQ]);
     return {
         tasks: (tasksRes.results || []).map(rowToTask),
         channels: (channelsRes.results || []).map(rowToChannel)
     };
 }
 
-async function saveConfigToD1(db, body) {
+async function saveConfigToD1(db, body, scope) {
     const tasks = body.tasks || [];
     const channels = body.channels || [];
+    // scope='all'（仅 root）：全量替换；否则只替换该账号的数据
+    const scoped = scope && scope !== 'all';
     // 先按 id 记住服务端已有的探测状态：前端的 status/lastCheck 可能是页面加载时的旧副本，
     // 不能覆盖定时任务刚写入的最新值（否则“上次探测”每次保存都会被打回旧时间）
     const prevRows = await db.prepare('SELECT id, status, last_check, fail_streak, fail_since FROM tasks').all();
     const prevMap = new Map((prevRows.results || []).map(r => [r.id, r]));
     // 全部写入一次提交：语句按顺序执行，语义与原来逐条 await 完全一致
-    const stmts = [
-        db.prepare('DELETE FROM tasks'),
-        db.prepare('DELETE FROM channels')
-    ];
+    const stmts = scoped
+        ? [db.prepare('DELETE FROM tasks WHERE owner = ?').bind(scope), db.prepare('DELETE FROM channels WHERE owner = ?').bind(scope)]
+        : [db.prepare('DELETE FROM tasks'), db.prepare('DELETE FROM channels')];
     for (const ch of channels) {
+        const chOwner = scoped ? scope : (ch.owner || '');
         stmts.push(db.prepare(
-            'INSERT INTO channels (name, type, token, url, chat_id, from_email, to_email, topic, secret, headers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO channels (name, type, token, url, chat_id, from_email, to_email, topic, secret, headers, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         ).bind(
             ch.name || '', ch.type || 'webhook', ch.token || '', ch.url || '',
             ch.chatId || '', ch.fromEmail || '', ch.toEmail || '',
-            ch.topic || '', ch.secret || '', ch.headers || ''
+            ch.topic || '', ch.secret || '', ch.headers || '', chOwner
         ));
     }
     for (const t of tasks) {
@@ -2915,9 +2963,10 @@ async function saveConfigToD1(db, body) {
         // 连续失败计数同样沿用服务端：保存配置不重置阶梯、不解除 7 天停跑（手动探测可恢复）
         const curStreak = prev ? (prev.fail_streak || 0) : 0;
         const curFailSince = prev ? (prev.fail_since || null) : null;
+        const tOwner = scoped ? scope : (t.owner || '');
         stmts.push(db.prepare(
-            'INSERT INTO tasks (name, url, interval, notify_channels, status, last_check, fail_streak, fail_since) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(t.name || '', t.url || '', t.interval || 5, nc, curStatus, curLastCheck, curStreak, curFailSince));
+            'INSERT INTO tasks (name, url, interval, notify_channels, status, last_check, fail_streak, fail_since, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(t.name || '', t.url || '', t.interval || 5, nc, curStatus, curLastCheck, curStreak, curFailSince, tOwner));
     }
     for (let k = 0; k < stmts.length; k += 500) {
         await db.batch(stmts.slice(k, k + 500));
@@ -2933,14 +2982,15 @@ function isTierLogPoint(streak) {
 }
 
 async function insertLog(db, entry) {
-    // 写入与裁剪一次提交：未超 100 条时 LIMIT max(0, …) 为 0，不删除任何行，语义与原来一致
+    const owner = entry.owner || '';
+    // 写入与裁剪一次提交：每个账号各保留最近 100 条；未超限时 LIMIT max(0, …) 为 0，不删除任何行
     await db.batch([
         db.prepare(
-            'INSERT INTO logs (time, task_name, status, detail, trigger) VALUES (?, ?, ?, ?, ?)'
-        ).bind(entry.time, entry.taskName, entry.status, entry.detail || '', entry.trigger || 'auto'),
+            'INSERT INTO logs (time, task_name, status, detail, trigger, owner) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(entry.time, entry.taskName, entry.status, entry.detail || '', entry.trigger || 'auto', owner),
         db.prepare(
-            'DELETE FROM logs WHERE id IN (SELECT id FROM logs ORDER BY time ASC LIMIT max(0, (SELECT COUNT(*) FROM logs) - 100))'
-        )
+            'DELETE FROM logs WHERE owner = ? AND id IN (SELECT id FROM logs WHERE owner = ? ORDER BY time ASC LIMIT max(0, (SELECT COUNT(*) FROM logs WHERE owner = ?) - 100))'
+        ).bind(owner, owner, owner)
     ]);
 }
 
@@ -3071,6 +3121,12 @@ export default {
         if (url.pathname.startsWith('/api/')) {
             if (!db) return new Response('{"error":"D1 database not bound (DB)"}', { status: 500, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             await ensureTables(db);
+            // 多租户：老数据（升级前）owner 为空，归属 root；WHERE 保证首次后为空操作
+            try {
+                await db.prepare("UPDATE tasks SET owner = ? WHERE owner IS NULL OR owner = ''").bind(adminUser).run();
+                await db.prepare("UPDATE channels SET owner = ? WHERE owner IS NULL OR owner = ''").bind(adminUser).run();
+                await db.prepare("UPDATE logs SET owner = ? WHERE owner IS NULL OR owner = ''").bind(adminUser).run();
+            } catch (e) {}
             // CSRF 防护：非 GET 请求若带 Origin/Referer，host 必须与本站一致
             if (request.method !== 'GET' && request.method !== 'HEAD' && !isSameOriginRequest(request)) {
                 return new Response('{"error":"Cross-origin request rejected"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -3136,12 +3192,13 @@ export default {
             const valid = !!tokenUser;
             if (url.pathname === '/api/check-session') {
                 return valid
-                    ? new Response(JSON.stringify({ user: tokenUser }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } })
+                    ? new Response(JSON.stringify({ user: tokenUser, isRoot: tokenUser === adminUser }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } })
                     : new Response('unauthorized', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
             if (!valid) return new Response('{"error":"Session Expired"}', { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
             if (url.pathname === '/api/users') {
+                if (tokenUser !== adminUser) return new Response('{\"error\":\"Forbidden\"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 if (request.method === 'GET') {
                     // 只返回用户名：密码哈希也不下发到前端
                     const res = await db.prepare('SELECT username FROM users ORDER BY id ASC').all();
@@ -3176,6 +3233,7 @@ export default {
             }
 
             if (url.pathname === '/api/settings') {
+                if (tokenUser !== adminUser) return new Response('{\"error\":\"Forbidden\"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 if (request.method === 'GET') {
                     const accountId = await getSetting(db, 'cf_account_id');
                     const token = await getSetting(db, 'cf_api_token');
@@ -3200,6 +3258,7 @@ export default {
             }
 
             if (url.pathname === '/api/test-cf' && request.method === 'POST') {
+                if (tokenUser !== adminUser) return new Response('{\"error\":\"Forbidden\"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 const body = await request.json();
                 const accountId = String(body.cf_account_id || '').trim() || await getSetting(db, 'cf_account_id');
                 const token = String(body.cf_api_token || '') || await getSetting(db, 'cf_api_token');
@@ -3219,31 +3278,44 @@ export default {
             }
 
             if (url.pathname === '/api/logs') {
+                // 账号作用域：root 可用 ?owner= 按账号查，子账号只能操作自己的
+                const qOwner = url.searchParams.get('owner');
+                const logScope = tokenUser === adminUser ? (qOwner || null) : tokenUser;
                 if (request.method === 'GET') {
-                    const res = await db.prepare('SELECT time, task_name, status, detail, trigger FROM logs ORDER BY time DESC LIMIT 100').all();
+                    const stmt = logScope
+                        ? db.prepare('SELECT time, task_name, status, detail, trigger, owner FROM logs WHERE owner = ? ORDER BY time DESC LIMIT 100').bind(logScope)
+                        : db.prepare('SELECT time, task_name, status, detail, trigger, owner FROM logs ORDER BY time DESC LIMIT 100');
+                    const res = await stmt.all();
                     const list = (res.results || []).map(r => ({
-                        time: r.time, taskName: r.task_name, status: r.status, detail: r.detail, trigger: r.trigger || 'auto'
+                        time: r.time, taskName: r.task_name, status: r.status, detail: r.detail, trigger: r.trigger || 'auto', owner: r.owner || ''
                     }));
                     return new Response(JSON.stringify(list), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'DELETE') {
-                    await db.prepare('DELETE FROM logs').run();
+                    if (logScope) await db.prepare('DELETE FROM logs WHERE owner = ?').bind(logScope).run();
+                    else await db.prepare('DELETE FROM logs').run();
                     return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
             if (url.pathname === '/api/config') {
+                // 账号作用域：root 可用 ?owner= 按账号查（缺省全部），子账号只能读写自己的
+                const cfgScope = tokenUser === adminUser ? (url.searchParams.get('owner') || null) : tokenUser;
                 if (request.method === 'GET') {
-                    return new Response(JSON.stringify(await loadConfigFromD1(db)), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    return new Response(JSON.stringify(await loadConfigFromD1(db, cfgScope)), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
-                    await saveConfigToD1(db, await request.json());
+                    const body = await request.json();
+                    let scope = body.owner || 'all';
+                    if (tokenUser !== adminUser) scope = tokenUser;
+                    await saveConfigToD1(db, body, scope);
                     return new Response('{"status":"ok"}', { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
             }
 
             if (url.pathname === '/api/config/export' && request.method === 'GET') {
-                const config = await loadConfigFromD1(db);
+                const expScope = tokenUser === adminUser ? (url.searchParams.get('owner') || null) : tokenUser;
+                const config = await loadConfigFromD1(db, expScope);
                 const payload = { version: 1, exportedAt: new Date().toISOString(), tasks: config.tasks, channels: config.channels };
                 const filename = 'keepalive-config-' + new Date().toISOString().slice(0, 10) + '.json';
                 return new Response(JSON.stringify(payload, null, 2), {
@@ -3271,13 +3343,18 @@ export default {
                 const tasks = rawTasks.filter(t => t && typeof t.name === 'string' && t.name.trim() && typeof t.url === 'string' && t.url.trim());
                 const channels = rawChannels.filter(c => c && typeof c.name === 'string' && c.name.trim() && typeof c.type === 'string' && c.type.trim());
                 const skipped = (rawTasks.length - tasks.length) + (rawChannels.length - channels.length);
-                await saveConfigToD1(db, { tasks, channels });
+                let impScope = body.owner || 'all';
+                if (tokenUser !== adminUser) impScope = tokenUser;
+                await saveConfigToD1(db, { tasks, channels }, impScope);
                 return new Response(JSON.stringify({ status: 'ok', tasks: tasks.length, channels: channels.length, skipped }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
 
             if (url.pathname === '/api/manual-check' && request.method === 'POST') {
-                const { taskIndex } = await request.json();
-                const config = await loadConfigFromD1(db);
+                const reqBody = await request.json();
+                const taskIndex = reqBody.taskIndex;
+                // taskIndex 指向前端当前列表：root 用请求的作用域，子账号强制自己的
+                const mcScope = tokenUser === adminUser ? (reqBody.owner && reqBody.owner !== 'all' ? reqBody.owner : null) : tokenUser;
+                const config = await loadConfigFromD1(db, mcScope);
                 if (!config.tasks[taskIndex]) {
                     return new Response(JSON.stringify({ error: '任务不存在' }), { status: 404, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
@@ -3287,13 +3364,13 @@ export default {
                 let detailMsg = '';
                 const startTs = Date.now();
                 try {
-                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.1.0' }, cf: { cacheTtl: 0 } });
+                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.2.0' }, cf: { cacheTtl: 0 } });
                     isSuccess = res.ok;
                     detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
                 } catch (e) {
                     detailMsg = '网络或DNS异常: ' + e.message;
                 }
-                await insertLog(db, { time: Date.now(), taskName: task.name, status: isSuccess ? 'ok' : 'down', detail: detailMsg, trigger: 'manual' });
+                await insertLog(db, { time: Date.now(), taskName: task.name, status: isSuccess ? 'ok' : 'down', detail: detailMsg, trigger: 'manual', owner: task.owner });
                 const newStatus = isSuccess ? 'ok' : 'down';
                 const now = Date.now();
                 // 手动探测是用户主动行为：重置连续失败计数（7 天停跑后可通过手动探测恢复）
@@ -3301,7 +3378,7 @@ export default {
                 const newFailSince = isSuccess ? null : now;
                 if (task.id) await db.prepare('UPDATE tasks SET status = ?, last_check = ?, fail_streak = ?, fail_since = ? WHERE id = ?').bind(newStatus, now, newStreak, newFailSince, task.id).run();
 
-                const linked = config.channels.filter(c => (task.notifyChannels || []).includes(c.name));
+                const linked = config.channels.filter(c => c.owner === task.owner && (task.notifyChannels || []).includes(c.name));
                 const timeStr = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
                 if (!isSuccess && oldStatus !== 'down') { // 仅状态变化时通知，持续 down 不重复打扰
                     await sendNotifications(linked, '🚨 手动检查失败', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr + '\n【详情】' + detailMsg);
@@ -3337,7 +3414,7 @@ export default {
         const db = env.DB;
         if (!db) return;
         await ensureTables(db);
-        const config = await loadConfigFromD1(db);
+        const config = await loadConfigFromD1(db, null);
         if (!config.tasks.length) return;
         const now = Date.now();
 
@@ -3351,7 +3428,7 @@ export default {
             if (failMs >= 7 * 86400000) {
                 const prevFailMs = (task.lastCheck || 0) - (task.failSince || 0);
                 if (prevFailMs < 7 * 86400000 && logLevel !== 'off') {
-                    await insertLog(db, { time: now, taskName: task.name, status: 'down', detail: '连续失败已达 7 天，暂停自动探测（手动探测可恢复）', trigger: 'auto' });
+                    await insertLog(db, { time: now, taskName: task.name, status: 'down', detail: '连续失败已达 7 天，暂停自动探测（手动探测可恢复）', trigger: 'auto', owner: task.owner });
                 }
                 if (task.id) await db.prepare('UPDATE tasks SET last_check = ? WHERE id = ?').bind(now, task.id).run();
                 continue;
@@ -3361,7 +3438,7 @@ export default {
             let detailMsg = '';
             const startTs = Date.now();
             try {
-                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.1.0' }, cf: { cacheTtl: 0 } });
+                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.2.0' }, cf: { cacheTtl: 0 } });
                 isSuccess = res.ok;
                 detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
             } catch (e) {
@@ -3377,10 +3454,10 @@ export default {
             const tierPoint = !isSuccess && isTierLogPoint(newStreak);
             if (logLevel === 'all' || (logLevel === 'failed' && tierPoint)) {
                 const logDetail = tierPoint ? (detailMsg + '（连续第 ' + newStreak + ' 次失败）') : detailMsg;
-                await insertLog(db, { time: now, taskName: task.name, status: newStatus, detail: logDetail, trigger: 'auto' });
+                await insertLog(db, { time: now, taskName: task.name, status: newStatus, detail: logDetail, trigger: 'auto', owner: task.owner });
             }
 
-            const linked = config.channels.filter(c => (task.notifyChannels || []).includes(c.name));
+            const linked = config.channels.filter(c => c.owner === task.owner && (task.notifyChannels || []).includes(c.name));
             const timeStr = new Date(now).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
             if (!isSuccess && task.status !== 'down') { // 仅状态变化时通知：pending/ok -> down 才推，持续 down 不重复打扰
                 await sendNotifications(linked, '🚨 站点保活失败', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr + '\n【详情】' + detailMsg);
