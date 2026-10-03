@@ -1,4 +1,4 @@
-// ========== 站点保活管理系统 v1.2.13 ==========
+// ========== 站点保活管理系统 v1.2.14 ==========
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -763,9 +763,6 @@ const UI_HTML = `
 .fill-current {
     fill: currentColor
 }
-.fill-gray-900 {
-    fill: #111827
-}
 .p-1 {
     padding: 0.25rem
 }
@@ -1141,6 +1138,9 @@ const UI_HTML = `
     --tw-text-opacity: 1;
     color: rgb(99 102 241 / var(--tw-text-opacity))
 }
+.hover\\:underline:hover {
+    text-decoration-line: underline
+}
 .hover\\:opacity-100:hover {
     opacity: 1
 }
@@ -1218,10 +1218,6 @@ const UI_HTML = `
 .dark\\:bg-fuchsia-950:is(.dark *) {
     --tw-bg-opacity: 1;
     background-color: rgb(74 4 78 / var(--tw-bg-opacity))
-}
-.dark\\:bg-gray-900:is(.dark *) {
-    --tw-bg-opacity: 1;
-    background-color: rgb(17 24 39 / var(--tw-bg-opacity))
 }
 .dark\\:bg-green-900\\/40:is(.dark *) {
     background-color: rgb(20 83 45 / 0.4)
@@ -1315,9 +1311,6 @@ const UI_HTML = `
 }
 .dark\\:bg-yellow-900\\/40:is(.dark *) {
     background-color: rgb(113 63 18 / 0.4)
-}
-.dark\\:fill-white:is(.dark *) {
-    fill: #fff
 }
 .dark\\:text-amber-300:is(.dark *) {
     --tw-text-opacity: 1;
@@ -1667,7 +1660,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-8 h-8"><path fill="#F6821F" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></svg></div>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive v1.2.13</p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.14</a></p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1697,7 +1690,7 @@ M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 
                         <div class="w-8 h-8 rounded-xl bg-white dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-5 h-5"><path fill="#F6821F" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></svg></div>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · v1.2.13</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.14</a></div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1713,8 +1706,7 @@ M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 
                         <button @click="exportConfig" title="导出配置" class="btn-press w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-base flex items-center justify-center">📤</button>
                         <button @click="triggerImport" title="导入配置" class="btn-press w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-base flex items-center justify-center">📥</button>
                         <input ref="importFileInput" type="file" accept=".json,application/json" class="hidden" @change="handleImportFile">
-                        <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" title="GitHub 仓库" class="btn-press w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-gray-900 flex items-center justify-center"><svg viewBox="0 0 24 24" class="w-5 h-5 fill-gray-900 dark:fill-white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z
-M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                        
                         <button @click="toggleTheme" title="切换主题" class="btn-press w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-base flex items-center justify-center">{{ isDark ? '🌙' : '☀️' }}</button>
                         <button @click="askConfirm('确定退出登录？', doLogoutReal)" title="退出登录" class="btn-press w-9 h-9 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/40 text-red-500 text-base flex items-center justify-center">🚪</button>
                     </div>
@@ -1768,7 +1760,7 @@ M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold">v1.2.13</div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold"><a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.14</a></div>
                     </div>
                 </aside>
 
