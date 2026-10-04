@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '部署环境'
+        type: choice
+        required: true
+        default: production
+        options: [production, staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # 在仓库 Settings → Environments 里给 production 配审批保护，需要时才放行
+    environment: ${{ inputs.environment || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy --env ${{ inputs.environment || 'production' }}
+        env:
+          # 仓库 Secrets 里配置：CLOUDFLARE_API_TOKEN（需 Workers 部署 + D1 读写权限）
+          # 若一个 Token 对应多个账户，另在 wrangler.toml 顶层加 account_id
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -1,9 +1,10 @@
 {
   "name": "worker-keepalive",
   "private": true,
-  "version": "1.2.3",
+  "version": "1.2.16",
   "scripts": {
     "build": "node scripts/build.js",
+    "test": "node --test \"test/**/*.mjs\"",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {

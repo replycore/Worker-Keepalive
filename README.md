@@ -38,6 +38,14 @@ npx wrangler deploy
 
 首次部署后立刻改掉默认密码。
 
+**方式三：GitHub Actions 自动部署**
+
+仓库已内置 CI（`.github/workflows/ci.yml`）与发布流水线（`deploy.yml`）：
+
+- 每次 push / PR 自动跑：`npm ci` → `npm test` → `npm run build`，并校验 `worker.js` 已重新打包（改了源码没打包会失败）
+- 发 Release（或在 Actions 页手动触发）自动部署到 Cloudflare：需在仓库 Settings → Secrets 配置 `CLOUDFLARE_API_TOKEN`（要有 Workers 部署 + D1 读写权限）；`production` 环境可在 Environments 里加人工审批
+- 多环境：`wrangler.toml` 已预置 `[env.staging]` / `[env.production]`，手动部署用 `npx wrangler deploy --env staging`（先 `npx wrangler d1 create keepalive-db-staging` 建库并填 `database_id`）
+
 ## 使用
 
 1. 「通知渠道」添加推送方式（Telegram / Bark / PushPlus / 钉钉 / 飞书 / 邮件等 10 种）
@@ -52,9 +60,11 @@ npx wrangler deploy
 - 删除子账号会同时清除它的全部数据，保存前二次确认
 - 子账号可看帐户额度，不可改 Cloudflare API 配置
 
-## 帐户额度
+## 帐户额度与 D1 额度告警
 
 「账号」页填 Cloudflare Account ID + API Token（需要"帐户分析"读取权限），「运行概览」显示 Workers / D1 真实用量。
+
+配好通知渠道后，可在「账号」页开启 **📊 D1 额度告警**：每天北京时间 8 点检查一次 D1 用量（读取 / 写入 / 存储），超过设定阈值（默认 80%）推送告警、回落后推送恢复，只在状态变化时通知。
 
 ## 常见问题
 
@@ -66,4 +76,10 @@ npx wrangler deploy
 
 ```bash
 npm i && npm run build
+```
+
+## 测试
+
+```bash
+npm test   # node:test，覆盖纯函数（阶梯日志、会话令牌、b64u、字段映射、用量聚合、safeJson）
 ```

@@ -1,4 +1,5 @@
-// ========== 站点保活管理系统 v1.2.15 ==========
+// ========== 站点保活管理系统 v1.2.16 ==========
+const APP_VERSION = '1.2.16';
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -267,6 +268,9 @@ const UI_HTML = `
 }
 .w-2\\/3 {
     width: 66.666667%
+}
+.w-24 {
+    width: 6rem
 }
 .w-3 {
     width: 0.75rem
@@ -1051,6 +1055,9 @@ const UI_HTML = `
     --tw-text-opacity: 1;
     color: rgb(133 77 14 / var(--tw-text-opacity))
 }
+.accent-indigo-600 {
+    accent-color: #4f46e5
+}
 .opacity-50 {
     opacity: 0.5
 }
@@ -1111,6 +1118,11 @@ const UI_HTML = `
 }
 .transition {
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms
+}
+.transition-colors {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms
 }
@@ -1660,7 +1672,7 @@ const UI_HTML = `
                 <div class="text-center mb-7">
                     <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white dark:bg-white shadow-lg mb-4"><svg viewBox="0 0 24 24" class="w-8 h-8"><path fill="#F6821F" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></svg></div>
                     <h2 class="text-xl font-black text-gray-900 dark:text-white">保活监控面板</h2>
-                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.15</a></p>
+                    <p class="text-[11px] text-gray-400 dark:text-slate-400 mt-1.5">Worker-Keepalive <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v${APP_VERSION}</a></p>
                 </div>
                 <div class="space-y-3.5">
                     <div>
@@ -1689,7 +1701,7 @@ const UI_HTML = `
                         <div class="w-8 h-8 rounded-xl bg-white dark:bg-white flex items-center justify-center shadow-md shrink-0"><svg viewBox="0 0 24 24" class="w-5 h-5"><path fill="#F6821F" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></svg></div>
                         <div class="min-w-0 hidden min-[400px]:block">
                             <div class="text-sm font-extrabold text-gray-900 dark:text-white leading-tight truncate">Worker-Keepalive</div>
-                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.15</a></div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 truncate">{{ loggedInUser }} · <a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v${APP_VERSION}</a></div>
                         </div>
                         <span class="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" :class="allDown ? 'bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-400'">
                             <span class="w-1.5 h-1.5 rounded-full" :class="allDown ? 'bg-red-500 dot-live-down' : 'bg-green-500 dot-live-ok'"></span>{{ allDown ? '异常' : '运行中' }}
@@ -1761,7 +1773,7 @@ const UI_HTML = `
                         <button v-if="isRoot" @click="switchTab('users')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition" :class="currentTab === 'users' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700/60'">
                             <span class="text-base">👥</span>系统账号
                         </button>
-                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold"><a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v1.2.15</a></div>
+                        <div class="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700/60 px-3.5 py-2 text-[10px] text-gray-400 dark:text-slate-500 font-bold"><a href="https://github.com/replycore/Worker-Keepalive" target="_blank" rel="noopener" class="hover:underline">v${APP_VERSION}</a></div>
                     </div>
                 </aside>
 
@@ -2112,6 +2124,38 @@ const UI_HTML = `
                             <button @click="saveCfSettings" :disabled="cf.saving" class="btn-primary text-white p-3.5 rounded-2xl font-bold text-sm disabled:opacity-50">{{ cf.saving ? '保存中…' : '💾 保存' }}</button>
                         </div>
                     </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <h3 class="font-extrabold text-sm text-gray-800 dark:text-slate-200">📊 D1 额度告警</h3>
+                            <span v-if="cf.alertEnabled" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-green-100 dark:bg-green-950/70 text-green-700 dark:text-green-400 shrink-0">已启用</span>
+                            <span v-else class="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 shrink-0">未启用</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">每天北京时间 8 点检查一次 D1 用量（读取 / 写入 / 存储），超过阈值推送告警、回落后推送恢复；仅状态变化时通知，不重复打扰。</p>
+                        <div v-if="cf.alertChannels.length === 0" class="text-[11px] text-gray-400 dark:text-slate-500 py-2">尚未配置通知渠道，请先到「渠道」页添加通知渠道，添加后可在这里开启额度告警。</div>
+                        <div v-else class="space-y-3.5">
+                            <label class="flex items-center justify-between gap-2 cursor-pointer">
+                                <span class="text-xs font-bold text-gray-700 dark:text-slate-300">启用 D1 额度告警</span>
+                                <input type="checkbox" v-model="cf.alertEnabled" class="w-5 h-5 accent-indigo-600 shrink-0">
+                            </label>
+                            <div>
+                                <div class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1">告警阈值（用量占限额百分比）</div>
+                                <div class="flex items-center gap-2">
+                                    <input v-model.number="cf.alertThreshold" type="number" min="1" max="100" class="input-focus w-24 p-3 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-bold text-gray-800 dark:text-slate-200 outline-none">
+                                    <span class="text-xs font-bold text-gray-500 dark:text-slate-400">%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1">通知渠道（可多选）</div>
+                                <div class="grid grid-cols-2 gap-2 p-3 border border-gray-200 dark:border-slate-700 rounded-2xl bg-gray-50 dark:bg-slate-900 max-h-44 overflow-y-auto">
+                                    <label v-for="name in cf.alertChannels" :key="name" class="flex items-center gap-2 text-xs font-bold p-1 cursor-pointer">
+                                        <input type="checkbox" :value="name" v-model="cf.alertChannelNames" class="w-4 h-4 shrink-0">
+                                        <span class="truncate">{{ name }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <button @click="saveQuotaAlert" :disabled="cf.alertSaving" class="btn-primary w-full text-white p-3.5 rounded-2xl font-bold text-sm disabled:opacity-50">{{ cf.alertSaving ? '保存中…' : '💾 保存告警配置' }}</button>
+                        </div>
+                    </div>
                 </div>
                 </main>
             </div>
@@ -2245,7 +2289,7 @@ const UI_HTML = `
                 const config = ref({ tasks: [], channels: [] });
                 const logs = ref([]);
                 const quota = ref({ loading: false, data: null, error: '', configured: false });
-                const cf = ref({ accountId: '', apiToken: '', configured: false, accountName: '', saving: false, testing: false, testMsg: '', testOk: false });
+                const cf = ref({ accountId: '', apiToken: '', configured: false, accountName: '', saving: false, testing: false, testMsg: '', testOk: false, alertEnabled: false, alertThreshold: 80, alertChannels: [], alertChannelNames: [], alertSaving: false });
                 const logLevel = ref('failed');
                 const manualRunning = ref(false);
                 const isLoggedIn = ref(null); // null=会话检查中，false=未登录，true=已登录
@@ -2548,6 +2592,11 @@ const UI_HTML = `
                             cf.value.configured = !!data.cf_configured;
                             cf.value.accountName = data.cf_account_name || '';
                             cf.value.apiToken = '';
+                            cf.value.alertEnabled = data.quota_alert_enabled === '1';
+                            cf.value.alertThreshold = parseInt(data.quota_alert_threshold || '80', 10) || 80;
+                            try { cf.value.alertChannelNames = JSON.parse(data.quota_alert_channels || '[]'); } catch (e) { cf.value.alertChannelNames = []; }
+                            if (!Array.isArray(cf.value.alertChannelNames)) cf.value.alertChannelNames = [];
+                            cf.value.alertChannels = Array.isArray(data.channels) ? data.channels : [];
                         }
                     } catch (e) {}
                 };
@@ -2563,6 +2612,19 @@ const UI_HTML = `
                         else toast(data.error || '保存失败', 'error');
                     } catch (e) { toast('保存失败，请重试', 'error'); }
                     finally { cf.value.saving = false; }
+                };
+                const saveQuotaAlert = async () => {
+                    if (cf.value.alertSaving) return;
+                    const th = parseInt(cf.value.alertThreshold, 10);
+                    if (!(th >= 1 && th <= 100)) { toast('阈值请输入 1-100 的整数', 'error'); return; }
+                    cf.value.alertSaving = true;
+                    try {
+                        const res = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ quota_alert_enabled: cf.value.alertEnabled ? '1' : '0', quota_alert_threshold: th, quota_alert_channels: cf.value.alertChannelNames }) });
+                        const data = await res.json().catch(() => ({}));
+                        if (res.ok) toast('D1 额度告警配置已保存', 'success');
+                        else toast(data.error || '保存失败', 'error');
+                    } catch (e) { toast('保存失败，请重试', 'error'); }
+                    finally { cf.value.alertSaving = false; }
                 };
                 const testCfConnection = async () => {
                     if (cf.value.testing) return;
@@ -2729,7 +2791,7 @@ const UI_HTML = `
                     openBatchChannelModal, confirmBatchAssign, batchRemoveTasks,
                     manualCheck, manualRunning, refreshAll, isRefreshing, isSaving, loginShake,
                     quota, fetchQuota, quotaPct, quotaBarClass, quotaUsedText,
-                    cf, fetchCfSettings, saveCfSettings, testCfConnection,
+                    cf, fetchCfSettings, saveCfSettings, saveQuotaAlert, testCfConnection,
                     toasts, toast, dismissToast, confirmDlg, askConfirm, answerConfirm, cancelConfirm,
                     clearLogs, clearLogsReal, doLogoutReal, removeTaskReal, removeChannelReal,
                     statTotal, okCount, downCount, allDown, isPaused, channelIcon, switchTab
@@ -2780,15 +2842,45 @@ async function createSessionToken(secret, text) {
     return btoa(String.fromCharCode(...new Uint8Array(sign)));
 }
 
+// base64url（UTF-8 安全）：用户名进会话令牌前先编码，':' 与非 Latin1 用户名不再破坏令牌结构
+function b64uEncode(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (const b of bytes) bin += String.fromCharCode(b);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function b64uDecode(str) {
+    const bin = atob(str.replace(/-/g, '+').replace(/_/g, '/'));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+}
+
 function parseSessionToken(token) {
     if (!token) return null;
     try {
-        const parts = atob(decodeURIComponent(token)).split(':');
-        if (parts.length !== 3) return null;
-        const [user, ts, sign] = parts;
+        const raw = decodeURIComponent(token);
+        const parts = raw.split(':');
+        let user, ts, sign;
+        if (parts.length === 3 && /^[A-Za-z0-9_-]+$/.test(parts[0])) {
+            // 新格式：b64u(user):ts:sign
+            user = b64uDecode(parts[0]); ts = parts[1]; sign = parts[2];
+        } else {
+            // 老格式兼容：btoa(user:ts:sign)
+            const d = atob(raw).split(':');
+            if (d.length !== 3) return null;
+            [user, ts, sign] = d;
+        }
+        if (!/^\d+$/.test(ts)) return null;
         if (Date.now() - parseInt(ts, 10) > 604800000) return null;
         return { user, ts, sign };
     } catch (e) { return null; }
+}
+
+// 安全解析 JSON 请求体：非法 JSON 返回 null（调用方回 400），不再抛成未处理 500
+async function safeJson(request) {
+    try { return await request.json(); }
+    catch (e) { return null; }
 }
 
 // 密码哈希：SHA-256(salt:password)，salt 为随机 16 字节
@@ -3178,8 +3270,11 @@ async function sendNotifications(channels, title, message) {
             }
             case 'ntfy': {
                 const u = ch.url.endsWith('/') ? ch.url.slice(0, -1) : ch.url;
-                res = await fetch(u + '/' + ch.topic, {
-                    method: 'POST', headers: { Title: encodeURIComponent(title) }, body: message
+                // 标题放 query 参数：ntfy 服务端会做 percent-decode，中文标题正常显示；
+                // 放 Header 里 fetch 会直接抛错（Header 值必须是 Latin1），encodeURIComponent 则显示成 %XX 乱码
+                const sep = ch.topic.includes('?') ? '&' : '?';
+                res = await fetch(u + '/' + ch.topic + sep + 'title=' + encodeURIComponent(title), {
+                    method: 'POST', body: message
                 });
                 break;
             }
@@ -3211,6 +3306,60 @@ async function generateLarkSignature(secret, timestamp) {
     return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 
+// D1 额度告警：每天北京时间 8 点检查一次，只看 D1 三项（读取/写入/存储）；
+// 超过阈值推告警、回落推恢复——状态无变化时不打扰。失败静默，不影响保活主流程。
+// 纯函数：判断此刻北京时间是否已过 8 点、且今天尚未检查过；返回今天的北京时间日期（YYYY-MM-DD），否则 null
+function quotaAlertDue(now, checkedDay) {
+    const beijing = new Date(now + 8 * 3600 * 1000); // 北京时间 = UTC+8，全年无夏令时
+    const today = beijing.toISOString().slice(0, 10);
+    if (beijing.getUTCHours() < 8) return null;
+    if (checkedDay === today) return null;
+    return today;
+}
+async function maybeQuotaAlert(env, db, now) {
+    if (await getSetting(db, 'quota_alert_enabled') !== '1') return;
+    const accountId = await getSetting(db, 'cf_account_id');
+    const token = await getSetting(db, 'cf_api_token');
+    if (!accountId || !token) return;
+    let names = [];
+    try { names = JSON.parse(await getSetting(db, 'quota_alert_channels') || '[]'); } catch (e) {}
+    if (!Array.isArray(names) || !names.length) return;
+    const today = quotaAlertDue(now, await getSetting(db, 'quota_alert_checked_day'));
+    if (!today) return;
+    await setSetting(db, 'quota_alert_checked_day', today);
+    const live = await cfQuotaLive(accountId, token);
+    if (!live.ok || !live.items) return;
+    let th = parseInt(await getSetting(db, 'quota_alert_threshold') || '80', 10);
+    if (!(th >= 1 && th <= 100)) th = 80;
+    let maxPct = 0;
+    const parts = [];
+    for (const item of live.items) {
+        if (typeof item.name !== 'string' || !item.name.startsWith('D1')) continue;
+        if (item.used == null || !item.limit) continue;
+        const pct = item.used / item.limit * 100;
+        if (pct > maxPct) maxPct = pct;
+        parts.push(item.name + ' ' + Math.round(pct) + '%');
+    }
+    if (!parts.length) return;
+    const above = maxPct >= th;
+    let wasAbove = false;
+    try { const prev = JSON.parse(await getSetting(db, 'quota_alert_state') || 'null'); wasAbove = !!(prev && prev.above); } catch (e) {}
+    await setSetting(db, 'quota_alert_state', JSON.stringify({ above: above ? 1 : 0, pct: Math.round(maxPct), time: now }));
+    if (above === wasAbove) return;
+    // 告警走 root 自己的通知渠道（按名称匹配）
+    const adminUser = env.ADMIN_USER || 'admin';
+    const rows = await db.prepare('SELECT * FROM channels WHERE owner = ?').bind(adminUser).all();
+    const linked = (rows.results || []).map(rowToChannel).filter(c => names.includes(c.name));
+    if (!linked.length) return;
+    const timeStr = new Date(now).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    const accountLabel = live.accountName || accountId;
+    if (above) {
+        await sendNotifications(linked, '⚠️ D1 额度告警', '【账户】' + accountLabel + '\n【用量】' + parts.join('、') + '\n【阈值】' + th + '%\n【时间】' + timeStr + '\nD1 用量已超过告警阈值，请检查。');
+    } else {
+        await sendNotifications(linked, '✅ D1 额度恢复', '【账户】' + accountLabel + '\n【用量】' + parts.join('、') + '\n【时间】' + timeStr + '\nD1 用量已回落到阈值以下。');
+    }
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
@@ -3238,7 +3387,9 @@ export default {
             if (loginLocked(ip)) {
                 return new Response(JSON.stringify({ status: 'error', message: '尝试次数过多，请 15 分钟后再试' }), { status: 429, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
             }
-            const { user, pass } = await request.json();
+            const body = await safeJson(request);
+            if (!body) return new Response(JSON.stringify({ status: 'error', message: '请求体不是合法 JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+            const { user, pass } = body;
             let ok = user === adminUser && pass === adminPass;
             let secret = null;
             if (ok) {
@@ -3263,7 +3414,7 @@ export default {
                 loginFailures.delete(ip);
                 const ts = Date.now().toString();
                 const sign = await createSessionToken(secret, user + ':' + ts);
-                const fullToken = btoa(user + ':' + ts + ':' + sign);
+                const fullToken = b64uEncode(user) + ':' + ts + ':' + sign;
                 return new Response('{"status":"ok"}', {
                     headers: {
                         'Content-Type': 'application/json', 'Cache-Control': 'no-store',
@@ -3306,14 +3457,16 @@ export default {
                     return new Response(JSON.stringify({ rootUser: adminUser, users }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
-                    const payload = await request.json();
-                    const list = (payload || []).filter(u => u && u.username);
+                    const payload = await safeJson(request);
                     const bad = (msg) => new Response(JSON.stringify({ error: msg }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    if (!payload) return bad('请求体不是合法 JSON');
+                    const list = (payload || []).filter(u => u && u.username);
                     const names = list.map(u => u.username);
                     // 用户名在提交里重复：直接 400，避免 UNIQUE 冲突变成裸 500
                     if (new Set(names).size !== names.length) return bad('用户名重复，请检查');
                     for (const n of names) {
                         if (n === adminUser) return bad('子账号不能与 Root 同名');
+                        if (n.length > 32) return bad('用户名 "' + n + '" 过长（最多 32 个字符）');
                     }
                     // 密码留空表示不修改：按用户名沿用旧哈希；新用户必须设置密码
                     const exRows = await db.prepare('SELECT username, password, salt FROM users').all();
@@ -3366,11 +3519,31 @@ export default {
                     const accountId = await getSetting(db, 'cf_account_id');
                     const token = await getSetting(db, 'cf_api_token');
                     const accountName = await getSetting(db, 'cf_account_name');
+                    // D1 额度告警只允许用 root 自己的通知渠道：把渠道名下发给前端做多选
+                    const chRows = await db.prepare('SELECT name FROM channels WHERE owner = ? ORDER BY id ASC').bind(adminUser).all();
                     // Token 不下发前端：只告诉前端是否已配置
-                    return new Response(JSON.stringify({ cf_account_id: accountId, cf_configured: !!(accountId && token), cf_account_name: accountName }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    return new Response(JSON.stringify({
+                        cf_account_id: accountId, cf_configured: !!(accountId && token), cf_account_name: accountName,
+                        quota_alert_enabled: await getSetting(db, 'quota_alert_enabled') || '0',
+                        quota_alert_threshold: await getSetting(db, 'quota_alert_threshold') || '80',
+                        quota_alert_channels: await getSetting(db, 'quota_alert_channels') || '[]',
+                        channels: (chRows.results || []).map(r => r.name)
+                    }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
-                    const body = await request.json();
+                    const body = await safeJson(request);
+                    if (!body) return new Response(JSON.stringify({ error: '请求体不是合法 JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    // D1 额度告警配置：独立保存，不依赖 Cloudflare API 字段
+                    if ('quota_alert_enabled' in body || 'quota_alert_threshold' in body || 'quota_alert_channels' in body) {
+                        const en = (body.quota_alert_enabled === '1' || body.quota_alert_enabled === true) ? '1' : '0';
+                        let th = parseInt(body.quota_alert_threshold, 10);
+                        if (!(th >= 1 && th <= 100)) th = 80;
+                        const chs = Array.isArray(body.quota_alert_channels) ? body.quota_alert_channels.filter(x => typeof x === 'string' && x) : [];
+                        await setSetting(db, 'quota_alert_enabled', en);
+                        await setSetting(db, 'quota_alert_threshold', String(th));
+                        await setSetting(db, 'quota_alert_channels', JSON.stringify(chs));
+                        return new Response(JSON.stringify({ status: 'ok' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    }
                     const accountId = String(body.cf_account_id || '').trim();
                     if (!accountId) return new Response(JSON.stringify({ error: '请填写 Account ID' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                     await setSetting(db, 'cf_account_id', accountId);
@@ -3387,7 +3560,8 @@ export default {
 
             if (url.pathname === '/api/test-cf' && request.method === 'POST') {
                 if (tokenUser !== adminUser) return new Response('{\"error\":\"Forbidden\"}', { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-                const body = await request.json();
+                const body = await safeJson(request);
+                if (!body) return new Response(JSON.stringify({ ok: false, error: '请求体不是合法 JSON' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 const accountId = String(body.cf_account_id || '').trim() || await getSetting(db, 'cf_account_id');
                 const token = String(body.cf_api_token || '') || await getSetting(db, 'cf_api_token');
                 if (!accountId || !token) return new Response(JSON.stringify({ ok: false, error: '请填写 Account ID 与 API Token' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -3405,7 +3579,8 @@ export default {
             }
 
             if (url.pathname === '/api/test-channel' && request.method === 'POST') {
-                const ch = await request.json();
+                const ch = await safeJson(request);
+                if (!ch) return new Response(JSON.stringify({ status: 'error', message: '请求体不是合法 JSON' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 const testTime = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
                 const results = await sendNotifications([ch], '🔧 渠道配置连通性测试', '测试消息\n【时间】' + testTime);
                 const first = results[0];
@@ -3441,7 +3616,8 @@ export default {
                     return new Response(JSON.stringify(await loadConfigFromD1(db, cfgScope)), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
                 if (request.method === 'POST') {
-                    const body = await request.json();
+                    const body = await safeJson(request);
+                    if (!body) return new Response(JSON.stringify({ error: '请求体不是合法 JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                     for (const t of (body.tasks || [])) {
                         const tu = String(t.url || '').trim();
                         if (tu && !/^https?:\/\//i.test(tu)) {
@@ -3492,7 +3668,8 @@ export default {
             }
 
             if (url.pathname === '/api/manual-check' && request.method === 'POST') {
-                const reqBody = await request.json();
+                const reqBody = await safeJson(request);
+                if (!reqBody) return new Response(JSON.stringify({ error: '请求体不是合法 JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 const taskIndex = reqBody.taskIndex;
                 // taskIndex 指向前端当前列表：root 用请求的作用域，子账号强制自己的
                 const mcScope = tokenUser === adminUser ? (reqBody.owner && reqBody.owner !== 'all' ? reqBody.owner : null) : tokenUser;
@@ -3506,7 +3683,7 @@ export default {
                 let detailMsg = '';
                 const startTs = Date.now();
                 try {
-                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.2.0' }, cf: { cacheTtl: 0 } });
+                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/' + APP_VERSION }, cf: { cacheTtl: 0 } });
                     isSuccess = res.ok;
                     detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
                 } catch (e) {
@@ -3558,56 +3735,66 @@ export default {
         const db = env.DB;
         if (!db) return;
         await ensureTables(db);
+        const now = Date.now();
+        // D1 额度告警独立于保活任务：即使没有任务也照常检查
+        try { await maybeQuotaAlert(env, db, now); } catch (e) {}
         const config = await loadConfigFromD1(db, null);
         if (!config.tasks.length) return;
-        const now = Date.now();
 
         for (const task of config.tasks) {
-            const intervalMs = (task.interval || 5) * 60 * 1000;
-            if (now - (task.lastCheck || 0) < intervalMs) continue;
-
-            // 连续失败满 7 天：暂停自动探测（不再请求 URL）；刚跨过 7 天那一刻记一条日志，之后静默跳过
-            // 手动探测可恢复；保存配置不解除停跑
-            const failMs = (task.failStreak > 0 && task.failSince) ? (now - task.failSince) : 0;
-            if (failMs >= 7 * 86400000) {
-                const prevFailMs = (task.lastCheck || 0) - (task.failSince || 0);
-                if (prevFailMs < 7 * 86400000 && logLevel !== 'off') {
-                    await insertLog(db, { time: now, taskName: task.name, status: 'down', detail: '连续失败已达 7 天，暂停自动探测（手动探测可恢复）', trigger: 'auto', owner: task.owner });
-                }
-                if (task.id) await db.prepare('UPDATE tasks SET last_check = ? WHERE id = ?').bind(now, task.id).run();
-                continue;
-            }
-
-            let isSuccess = false;
-            let detailMsg = '';
-            const startTs = Date.now();
+            // 单个任务抛错不影响其余任务：记一条日志后继续
             try {
-                const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/1.2.0' }, cf: { cacheTtl: 0 } });
-                isSuccess = res.ok;
-                detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
-            } catch (e) {
-                detailMsg = '网络或DNS异常: ' + e.message;
-            }
+                const intervalMs = (task.interval || 5) * 60 * 1000;
+                if (now - (task.lastCheck || 0) < intervalMs) continue;
 
-            const newStatus = isSuccess ? 'ok' : 'down';
-            const newStreak = isSuccess ? 0 : (task.failStreak || 0) + 1;
-            const newFailSince = isSuccess ? null : ((task.failStreak > 0 && task.failSince) ? task.failSince : now);
-            if (task.id) await db.prepare('UPDATE tasks SET status = ?, last_check = ?, fail_streak = ?, fail_since = ? WHERE id = ?').bind(newStatus, now, newStreak, newFailSince, task.id).run();
+                // 连续失败满 7 天：暂停自动探测（不再请求 URL）；刚跨过 7 天那一刻记一条日志，之后静默跳过
+                // 手动探测可恢复；保存配置不解除停跑
+                const failMs = (task.failStreak > 0 && task.failSince) ? (now - task.failSince) : 0;
+                if (failMs >= 7 * 86400000) {
+                    const prevFailMs = (task.lastCheck || 0) - (task.failSince || 0);
+                    if (prevFailMs < 7 * 86400000 && logLevel !== 'off') {
+                        await insertLog(db, { time: now, taskName: task.name, status: 'down', detail: '连续失败已达 7 天，暂停自动探测（手动探测可恢复）', trigger: 'auto', owner: task.owner });
+                    }
+                    if (task.id) await db.prepare('UPDATE tasks SET last_check = ? WHERE id = ?').bind(now, task.id).run();
+                    continue;
+                }
 
-            // 阶梯日志：连续失败只在第 1/3/33/333…次记录并注明次数，其余跳过，避免离线日志风暴
-            const tierPoint = !isSuccess && isTierLogPoint(newStreak);
-            if (logLevel === 'all' || (logLevel === 'failed' && tierPoint)) {
-                const logDetail = tierPoint ? (detailMsg + '（连续第 ' + newStreak + ' 次失败）') : detailMsg;
-                await insertLog(db, { time: now, taskName: task.name, status: newStatus, detail: logDetail, trigger: 'auto', owner: task.owner });
-            }
+                let isSuccess = false;
+                let detailMsg = '';
+                const startTs = Date.now();
+                try {
+                    const res = await fetch(task.url, { method: 'GET', headers: { 'User-Agent': 'Worker-Keepalive/' + APP_VERSION }, cf: { cacheTtl: 0 } });
+                    isSuccess = res.ok;
+                    detailMsg = isSuccess ? ('HTTP ' + res.status + ' (' + (Date.now() - startTs) + 'ms)') : ('HTTP 状态异常: ' + res.status);
+                } catch (e) {
+                    detailMsg = '网络或DNS异常: ' + e.message;
+                }
 
-            const linked = config.channels.filter(c => c.owner === task.owner && (task.notifyChannels || []).includes(c.name));
-            const timeStr = new Date(now).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-            if (!isSuccess && task.status !== 'down') { // 仅状态变化时通知：pending/ok -> down 才推，持续 down 不重复打扰
-                await sendNotifications(linked, '🚨 站点保活失败', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr + '\n【详情】' + detailMsg);
-            } else if (isSuccess && task.status === 'down') { // 修复：持续 down 时不再误发“恢复”通知
-                await sendNotifications(linked, '✅ 站点恢复正常', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr);
+                const newStatus = isSuccess ? 'ok' : 'down';
+                const newStreak = isSuccess ? 0 : (task.failStreak || 0) + 1;
+                const newFailSince = isSuccess ? null : ((task.failStreak > 0 && task.failSince) ? task.failSince : now);
+                if (task.id) await db.prepare('UPDATE tasks SET status = ?, last_check = ?, fail_streak = ?, fail_since = ? WHERE id = ?').bind(newStatus, now, newStreak, newFailSince, task.id).run();
+
+                // 阶梯日志：连续失败只在第 1/3/33/333…次记录并注明次数，其余跳过，避免离线日志风暴
+                const tierPoint = !isSuccess && isTierLogPoint(newStreak);
+                if (logLevel === 'all' || (logLevel === 'failed' && tierPoint)) {
+                    const logDetail = tierPoint ? (detailMsg + '（连续第 ' + newStreak + ' 次失败）') : detailMsg;
+                    await insertLog(db, { time: now, taskName: task.name, status: newStatus, detail: logDetail, trigger: 'auto', owner: task.owner });
+                }
+
+                const linked = config.channels.filter(c => c.owner === task.owner && (task.notifyChannels || []).includes(c.name));
+                const timeStr = new Date(now).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+                if (!isSuccess && task.status !== 'down') { // 仅状态变化时通知：pending/ok -> down 才推，持续 down 不重复打扰
+                    await sendNotifications(linked, '🚨 站点保活失败', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr + '\n【详情】' + detailMsg);
+                } else if (isSuccess && task.status === 'down') { // 修复：持续 down 时不再误发“恢复”通知
+                    await sendNotifications(linked, '✅ 站点恢复正常', '【任务】' + task.name + '\n【URL】' + task.url + '\n【时间】' + timeStr);
+                }
+            } catch (taskErr) {
+                try { await insertLog(db, { time: Date.now(), taskName: task.name, status: 'error', detail: '探测异常: ' + (taskErr && taskErr.message || taskErr), trigger: 'auto', owner: task.owner }); } catch (e2) {}
             }
         }
     }
 };
+
+// 命名导出：供 node:test 单测纯函数（Worker 运行时忽略这些导出）
+export { isTierLogPoint, parseSessionToken, b64uEncode, b64uDecode, rowToTask, rowToChannel, maxDataset, sumDataset, safeJson, quotaAlertDue };

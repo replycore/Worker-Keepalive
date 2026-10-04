@@ -17,3 +17,23 @@ LOG_LEVEL = "failed"
 # /api/* 已全部显式 no-store（鉴权接口永不进缓存），只缓存 UI 外壳。
 [cache]
 enabled = true
+
+# ---------- 多环境 ----------
+# 预发布：npx wrangler deploy --env staging
+# （先建库：npx wrangler d1 create keepalive-db-staging，把 database_id 填到下面）
+[env.staging]
+name = "worker-keepalive-staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "keepalive-db-staging"
+database_id = "REPLACE_WITH_STAGING_DATABASE_ID"
+
+# 生产：npx wrangler deploy --env production（GitHub Actions 发版自动走这个）
+[env.production]
+name = "worker-keepalive"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "keepalive-db"
+database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
