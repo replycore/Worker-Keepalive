@@ -1,5 +1,5 @@
-// ========== 站点保活管理系统 v1.2.16 ==========
-const APP_VERSION = '1.2.16';
+// ========== 站点保活管理系统 v1.2.17 ==========
+const APP_VERSION = '1.2.17';
 // 零外部依赖：Vue 3 与 Tailwind 编译产物构建时内联（VUE_SRC + <style> 内 CSS）。
 // 构建/部署前执行：npm i && node scripts/build.js
 // 构建脚本可重复执行，worker.js 里占位符/旧产物都会被整体重写。
@@ -1683,6 +1683,10 @@ const UI_HTML = `
                         <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1.5 ml-1">安全密码</label>
                         <input v-model="loginForm.pass" @keyup.enter="doLogin" type="password" placeholder="输入密码" autocomplete="current-password" class="input-focus w-full p-3.5 rounded-2xl border border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-900 text-[15px] font-bold text-gray-800 dark:text-slate-200 outline-none transition">
                     </div>
+                    <div v-if="tsWidget.required" class="flex flex-col items-center gap-1.5 py-1">
+                        <div id="ts-widget"></div>
+                        <div v-if="tsWidget.error" class="text-[11px] text-red-500 font-bold text-center">{{ tsWidget.error }}</div>
+                    </div>
                     <button @click="doLogin" :disabled="isLoggingIn" class="btn-primary w-full text-white p-3.5 rounded-2xl font-bold text-[15px] disabled:opacity-50 flex justify-center items-center gap-2">
                         <span v-if="isLoggingIn" class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                         <span>{{ isLoggingIn ? '验证中...' : '登录' }}</span>
@@ -2156,6 +2160,29 @@ const UI_HTML = `
                             <button @click="saveQuotaAlert" :disabled="cf.alertSaving" class="btn-primary w-full text-white p-3.5 rounded-2xl font-bold text-sm disabled:opacity-50">{{ cf.alertSaving ? '保存中…' : '💾 保存告警配置' }}</button>
                         </div>
                     </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <h3 class="font-extrabold text-sm text-gray-800 dark:text-slate-200">🛡️ Turnstile 人机验证</h3>
+                            <span v-if="tsConfig.enabled" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-green-100 dark:bg-green-950/70 text-green-700 dark:text-green-400 shrink-0">已启用</span>
+                            <span v-else class="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 shrink-0">未启用</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mb-3.5">开启后登录需要通过 Cloudflare Turnstile 人机验证；在 Cloudflare 后台「Turnstile」添加站点获取密钥。已登录的会话不受影响，无需重复验证。</p>
+                        <div class="space-y-3.5">
+                            <label class="flex items-center justify-between gap-2 cursor-pointer">
+                                <span class="text-xs font-bold text-gray-700 dark:text-slate-300">启用登录人机验证</span>
+                                <input type="checkbox" v-model="tsConfig.enabled" class="w-5 h-5 accent-indigo-600 shrink-0">
+                            </label>
+                            <div>
+                                <div class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1">Site Key（公开）</div>
+                                <input v-model="tsConfig.siteKey" placeholder="0x4AAAAAA…" autocapitalize="off" spellcheck="false" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1">Secret Key（留空不修改）<span v-if="tsConfig.configured" class="text-green-600 dark:text-green-400">· 已配置</span></div>
+                                <input v-model="tsConfig.secretKey" type="password" placeholder="Secret Key（留空不修改）" autocapitalize="off" spellcheck="false" class="input-focus w-full p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-mono text-gray-800 dark:text-slate-200 outline-none">
+                            </div>
+                            <button @click="saveTurnstileConfig" :disabled="tsConfig.saving" class="btn-primary w-full text-white p-3.5 rounded-2xl font-bold text-sm disabled:opacity-50">{{ tsConfig.saving ? '保存中…' : '💾 保存验证配置' }}</button>
+                        </div>
+                    </div>
                 </div>
                 </main>
             </div>
@@ -2290,6 +2317,7 @@ const UI_HTML = `
                 const logs = ref([]);
                 const quota = ref({ loading: false, data: null, error: '', configured: false });
                 const cf = ref({ accountId: '', apiToken: '', configured: false, accountName: '', saving: false, testing: false, testMsg: '', testOk: false, alertEnabled: false, alertThreshold: 80, alertChannels: [], alertChannelNames: [], alertSaving: false });
+                const tsConfig = ref({ enabled: false, siteKey: '', secretKey: '', configured: false, saving: false });
                 const logLevel = ref('failed');
                 const manualRunning = ref(false);
                 const isLoggedIn = ref(null); // null=会话检查中，false=未登录，true=已登录
@@ -2382,13 +2410,64 @@ const UI_HTML = `
                         }
                     } catch (e) { isLoggedIn.value = false; }
                 };
+                // Turnstile 登录人机验证：仅在后端开启时加载官方组件；已登录会话不经过登录页，无需验证
+                const tsWidget = ref({ required: false, siteKey: '', loaded: false, error: '', widgetId: null });
+                const fetchAuthConfig = async () => {
+                    try {
+                        const res = await fetch('/api/auth-config');
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.turnstile_enabled === '1' && data.turnstile_site_key) {
+                                tsWidget.value.required = true;
+                                tsWidget.value.siteKey = data.turnstile_site_key;
+                                loadTurnstile();
+                            }
+                        }
+                    } catch (e) {}
+                };
+                const loadTurnstile = () => {
+                    if (window.turnstile) return renderTurnstile();
+                    if (document.querySelector('script[data-ts]')) return;
+                    const script = document.createElement('script');
+                    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+                    script.async = true;
+                    script.defer = true;
+                    script.setAttribute('data-ts', '1');
+                    const timer = setTimeout(() => {
+                        if (!tsWidget.value.loaded) tsWidget.value.error = '人机验证组件加载超时，请检查网络后刷新重试';
+                    }, 10000);
+                    script.onload = () => { clearTimeout(timer); renderTurnstile(); };
+                    script.onerror = () => { clearTimeout(timer); tsWidget.value.error = '人机验证组件加载失败，请检查网络后刷新重试'; };
+                    document.head.appendChild(script);
+                };
+                const renderTurnstile = () => {
+                    try {
+                        tsWidget.value.widgetId = window.turnstile.render('#ts-widget', {
+                            sitekey: tsWidget.value.siteKey,
+                            theme: isDark.value ? 'dark' : 'light'
+                        });
+                        tsWidget.value.loaded = true;
+                        tsWidget.value.error = '';
+                    } catch (e) { tsWidget.value.error = '人机验证组件初始化失败，请刷新重试'; }
+                };
                 const doLogin = async () => {
                     if (!loginForm.value.user || !loginForm.value.pass) { loginShake.value = true; setTimeout(() => { loginShake.value = false; }, 500); return toast('账号密码不能为空', 'error'); }
+                    let tsToken = '';
+                    if (tsWidget.value.required) {
+                        if (!tsWidget.value.loaded || !window.turnstile) return toast('人机验证组件尚未加载完成，请稍候再试', 'error');
+                        tsToken = window.turnstile.getResponse(tsWidget.value.widgetId) || '';
+                        if (!tsToken) { loginShake.value = true; setTimeout(() => { loginShake.value = false; }, 500); return toast('请先完成人机验证', 'error'); }
+                    }
                     isLoggingIn.value = true;
                     try {
-                        const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loginForm.value) });
+                        const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...loginForm.value, 'cf-turnstile-response': tsToken }) });
                         if (res.ok) { toast('欢迎回来，' + loginForm.value.user + ' 🎉', 'success'); checkAuthSession(); }
-                        else { loginShake.value = true; setTimeout(() => { loginShake.value = false; }, 500); toast('登录验证失败，请检查账号密码', 'error'); }
+                        else {
+                            loginShake.value = true; setTimeout(() => { loginShake.value = false; }, 500);
+                            const d = await res.json().catch(() => ({}));
+                            toast(d.message || '登录验证失败，请检查账号密码', 'error');
+                            try { if (window.turnstile && tsWidget.value.widgetId != null) window.turnstile.reset(tsWidget.value.widgetId); } catch (e) {}
+                        }
                     } catch (e) { toast('网络异常，请稍后重试', 'error'); }
                     finally { isLoggingIn.value = false; }
                 };
@@ -2597,6 +2676,10 @@ const UI_HTML = `
                             try { cf.value.alertChannelNames = JSON.parse(data.quota_alert_channels || '[]'); } catch (e) { cf.value.alertChannelNames = []; }
                             if (!Array.isArray(cf.value.alertChannelNames)) cf.value.alertChannelNames = [];
                             cf.value.alertChannels = Array.isArray(data.channels) ? data.channels : [];
+                            tsConfig.value.enabled = data.turnstile_enabled === '1';
+                            tsConfig.value.siteKey = data.turnstile_site_key || '';
+                            tsConfig.value.configured = !!data.turnstile_configured;
+                            tsConfig.value.secretKey = '';
                         }
                     } catch (e) {}
                 };
@@ -2625,6 +2708,18 @@ const UI_HTML = `
                         else toast(data.error || '保存失败', 'error');
                     } catch (e) { toast('保存失败，请重试', 'error'); }
                     finally { cf.value.alertSaving = false; }
+                };
+                const saveTurnstileConfig = async () => {
+                    if (tsConfig.value.saving) return;
+                    if (tsConfig.value.enabled && !tsConfig.value.siteKey.trim() && !tsConfig.value.configured) { toast('请填写 Site Key', 'error'); return; }
+                    tsConfig.value.saving = true;
+                    try {
+                        const res = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ turnstile_enabled: tsConfig.value.enabled ? '1' : '0', turnstile_site_key: tsConfig.value.siteKey.trim(), turnstile_secret_key: tsConfig.value.secretKey }) });
+                        const data = await res.json().catch(() => ({}));
+                        if (res.ok) { tsConfig.value.secretKey = ''; toast('Turnstile 配置已保存', 'success'); fetchCfSettings(); }
+                        else toast(data.error || '保存失败', 'error');
+                    } catch (e) { toast('保存失败，请重试', 'error'); }
+                    finally { tsConfig.value.saving = false; }
                 };
                 const testCfConnection = async () => {
                     if (cf.value.testing) return;
@@ -2767,6 +2862,7 @@ const UI_HTML = `
                         else if (mq.addListener) mq.addListener(onSysTheme);
                     } catch (e) {}
                     checkAuthSession();
+                    fetchAuthConfig();
                     // 每 60 秒静默拉一次最新状态和日志，让“上次探测”随定时任务自动更新；
                     // 有未保存的修改、弹窗打开或页面在后台时跳过，避免覆盖用户正在编辑的内容
                     setInterval(() => {
@@ -2779,7 +2875,7 @@ const UI_HTML = `
 
                 return {
                     isDark, currentTab, hasUnsavedChanges, toggleTheme, tabClass, formatTime, formatLogTime,
-                    isLoggedIn, isLoggingIn, loginForm, loggedInUser, doLogin,
+                    isLoggedIn, isLoggingIn, loginForm, loggedInUser, doLogin, tsWidget,
                     sysUsers, rootUsername, isRoot, currentOwner, accountOptions, onOwnerFilterChange, saveUsers, addUser, removeUser,
                     config, logs, logLevel, loadConfig, fetchLogs, saveConfig, onSaveClick,
                     importFileInput, exportConfig, triggerImport, handleImportFile,
@@ -2791,7 +2887,7 @@ const UI_HTML = `
                     openBatchChannelModal, confirmBatchAssign, batchRemoveTasks,
                     manualCheck, manualRunning, refreshAll, isRefreshing, isSaving, loginShake,
                     quota, fetchQuota, quotaPct, quotaBarClass, quotaUsedText,
-                    cf, fetchCfSettings, saveCfSettings, saveQuotaAlert, testCfConnection,
+                    cf, fetchCfSettings, saveCfSettings, saveQuotaAlert, testCfConnection, tsConfig, saveTurnstileConfig,
                     toasts, toast, dismissToast, confirmDlg, askConfirm, answerConfirm, cancelConfirm,
                     clearLogs, clearLogsReal, doLogoutReal, removeTaskReal, removeChannelReal,
                     statTotal, okCount, downCount, allDown, isPaused, channelIcon, switchTab
@@ -3298,6 +3394,21 @@ async function generateDingTalkSignature(secret, timestamp) {
     return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 
+// Turnstile 人机验证：拿登录页提交的 token 去 Cloudflare 换验结果
+async function verifyTurnstile(secret, token, ip) {
+    try {
+        const body = 'secret=' + encodeURIComponent(secret) + '&response=' + encodeURIComponent(token) +
+            (ip ? '&remoteip=' + encodeURIComponent(ip) : '');
+        const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body
+        });
+        const data = await res.json().catch(() => ({}));
+        return !!(data && data.success);
+    } catch (e) { return false; }
+}
+
 async function generateLarkSignature(secret, timestamp) {
     const signStr = timestamp + '\n' + secret;
     const enc = new TextEncoder();
@@ -3389,6 +3500,15 @@ export default {
             }
             const body = await safeJson(request);
             if (!body) return new Response(JSON.stringify({ status: 'error', message: '请求体不是合法 JSON' }), { status: 400, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+            // Turnstile 人机验证：启用且配齐密钥时强制校验，未通过直接拒绝（已登录会话走 cookie，不经过这里）
+            const tsSecret = await getSetting(db, 'turnstile_secret_key');
+            if (await getSetting(db, 'turnstile_enabled') === '1' && tsSecret) {
+                const tsToken = body['cf-turnstile-response'] || '';
+                if (!tsToken || !(await verifyTurnstile(tsSecret, tsToken, ip))) {
+                    recordLoginFailure(ip);
+                    return new Response(JSON.stringify({ status: 'error', message: '人机验证未通过，请重试' }), { status: 403, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                }
+            }
             const { user, pass } = body;
             let ok = user === adminUser && pass === adminPass;
             let secret = null;
@@ -3430,6 +3550,18 @@ export default {
             return new Response('{"status":"ok"}', {
                 headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Set-Cookie': 'KA_SESSION=; Path=/; HttpOnly; Max-Age=0' }
             });
+        }
+
+        // 公开接口：登录页在未登录时拉取，用于决定是否渲染 Turnstile 组件。
+        // 只暴露开关与 Site Key（本就是公开的），Secret Key 永不下发。
+        if (url.pathname === '/api/auth-config' && request.method === 'GET') {
+            const siteKey = await getSetting(db, 'turnstile_site_key');
+            const secret = await getSetting(db, 'turnstile_secret_key');
+            const enforced = await getSetting(db, 'turnstile_enabled') === '1' && !!siteKey && !!secret;
+            return new Response(JSON.stringify({
+                turnstile_enabled: enforced ? '1' : '0',
+                turnstile_site_key: enforced ? siteKey : ''
+            }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
         }
 
         if (url.pathname === '/api/log-level') {
@@ -3527,6 +3659,9 @@ export default {
                         quota_alert_enabled: await getSetting(db, 'quota_alert_enabled') || '0',
                         quota_alert_threshold: await getSetting(db, 'quota_alert_threshold') || '80',
                         quota_alert_channels: await getSetting(db, 'quota_alert_channels') || '[]',
+                        turnstile_enabled: await getSetting(db, 'turnstile_enabled') || '0',
+                        turnstile_site_key: await getSetting(db, 'turnstile_site_key') || '',
+                        turnstile_configured: !!(await getSetting(db, 'turnstile_secret_key')),
                         channels: (chRows.results || []).map(r => r.name)
                     }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                 }
@@ -3542,6 +3677,14 @@ export default {
                         await setSetting(db, 'quota_alert_enabled', en);
                         await setSetting(db, 'quota_alert_threshold', String(th));
                         await setSetting(db, 'quota_alert_channels', JSON.stringify(chs));
+                        return new Response(JSON.stringify({ status: 'ok' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+                    }
+                    // Turnstile 配置：独立保存；Secret Key 留空表示不修改，永不下发前端
+                    if ('turnstile_enabled' in body || 'turnstile_site_key' in body || 'turnstile_secret_key' in body) {
+                        const ten = (body.turnstile_enabled === '1' || body.turnstile_enabled === true) ? '1' : '0';
+                        await setSetting(db, 'turnstile_enabled', ten);
+                        if (typeof body.turnstile_site_key === 'string') await setSetting(db, 'turnstile_site_key', body.turnstile_site_key.trim());
+                        if (typeof body.turnstile_secret_key === 'string' && body.turnstile_secret_key) await setSetting(db, 'turnstile_secret_key', body.turnstile_secret_key);
                         return new Response(JSON.stringify({ status: 'ok' }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
                     }
                     const accountId = String(body.cf_account_id || '').trim();
@@ -3797,4 +3940,4 @@ export default {
 };
 
 // 命名导出：供 node:test 单测纯函数（Worker 运行时忽略这些导出）
-export { isTierLogPoint, parseSessionToken, b64uEncode, b64uDecode, rowToTask, rowToChannel, maxDataset, sumDataset, safeJson, quotaAlertDue };
+export { isTierLogPoint, parseSessionToken, b64uEncode, b64uDecode, rowToTask, rowToChannel, maxDataset, sumDataset, safeJson, quotaAlertDue, verifyTurnstile };

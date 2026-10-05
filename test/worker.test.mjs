@@ -13,6 +13,7 @@ import {
   sumDataset,
   safeJson,
   quotaAlertDue,
+  verifyTurnstile,
 } from '../worker.js';
 
 test('isTierLogPoint：1/3/33/333… 阶梯点', () => {
@@ -103,4 +104,29 @@ test('quotaAlertDue：每天北京时间 8 点，一天只触发一次', () => {
   assert.equal(quotaAlertDue(Date.UTC(2026, 9, 6, 0, 5), '2026-10-05'), '2026-10-06');
   // 跨天边界：UTC 16:00 = 北京时间次日 00:00，未到 8 点
   assert.equal(quotaAlertDue(Date.UTC(2026, 9, 5, 16, 0), ''), null);
+});
+
+test('verifyTurnstile：服务端换验（mock fetch）', async () => {
+  const orig = globalThis.fetch;
+  try {
+    let lastBody = '';
+    globalThis.fetch = async (url, opts) => {
+      assert.equal(url, 'https://challenges.cloudflare.com/turnstile/v0/siteverify');
+      assert.equal(opts.method, 'POST');
+      lastBody = opts.body;
+      return new Response(JSON.stringify({ success: true }));
+    };
+    assert.equal(await verifyTurnstile('s3cr3t', 'tok123', '1.2.3.4'), true);
+    assert.ok(lastBody.includes('secret=s3cr3t'), 'secret 参与换验');
+    assert.ok(lastBody.includes('response=tok123'), 'token 参与换验');
+    assert.ok(lastBody.includes('remoteip=1.2.3.4'), '携带客户端 IP');
+
+    globalThis.fetch = async () => new Response(JSON.stringify({ success: false }));
+    assert.equal(await verifyTurnstile('s3cr3t', 'bad'), false);
+
+    globalThis.fetch = async () => { throw new Error('network down'); };
+    assert.equal(await verifyTurnstile('s3cr3t', 'tok'), false);
+  } finally {
+    globalThis.fetch = orig;
+  }
 });
